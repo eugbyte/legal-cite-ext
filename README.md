@@ -1,10 +1,8 @@
 # About
-A simple React starter template for the monorepo for a web extension, with pre-configured:
-* TypeScript
-* webpack
-* tailwind
-* eslint
-* jest
+ Web extension to auto generate citation when copying from legal sources.
+
+ Currently supported websites are:
+ 1. https://sso.agc.gov.sg 
 
 # How to develop
 ```
