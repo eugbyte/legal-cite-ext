@@ -8,5 +8,5 @@
 ```
 npm i
 npm run build
-npm run start:firefox
+npm run start:chrome // or, npm run start:firefox
 ```

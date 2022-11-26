@@ -4,9 +4,11 @@ const bracketAlpha = /\([A-Z]+\)/i;
 
 /**
  * We use an ordered hashmap to record the provisions found as we traverse up the DOM tree recursively using element.parentElement.
+ *
  * At the same time, when we find a provision, e.g. (2) of 5(2), we need to make sure that we don't add a provision such as "(a)",
  * when we inspect the entire textContent of the root parent element.
- * Thus, remove the trailing empty keys from the hashmap.
+ *
+ * Lastly, remove the trailing empty keys from the hashmap.
  */
 function backtrack(
   element: HTMLElement | null,
@@ -66,4 +68,15 @@ export function getProvision(element: HTMLElement): string {
   backtrack(element, map);
   console.log(map);
   return Array.from(map.values()).join("").replace(".", "");
+}
+
+export function getProvision2(element: HTMLElement): string {
+  const map = new Map<RegExp, string>([
+    [numDot, ""],
+    [bracketNumber, ""],
+    [bracketAlpha, ""],
+  ]);
+  backtrack(element, map);
+
+  return "";
 }

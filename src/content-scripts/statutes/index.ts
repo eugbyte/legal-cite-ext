@@ -30,7 +30,7 @@ import { getCitation } from "./get-citation";
         const text: string = document.getSelection()?.toString() || "";
         const htmlContent = `
           <p>${text}</p>
-          <span style="color:red">${citation}
+          <p style="color:red">${citation}</p>
         `;
         await write(htmlContent, `${text}\n${citation}`);
       } catch (error) {
