@@ -26,14 +26,14 @@ import { getCitation } from "./get-citation";
   });
 
   browser.runtime.onMessage.addListener(async (action: Action) => {
-    const hasRange = leftCursor?.target != null && rightCursor?.target != null;
     if (
-      hasRange &&
+      leftCursor?.target != null &&
+      rightCursor?.target != null &&
       action.id === "legal-cite-ext" &&
       action.type === "right-click"
     ) {
       try {
-        const citation = getCitation(rightCursor!.target as HTMLElement);
+        const citation = getCitation(rightCursor.target as HTMLElement);
         const text: string = document.getSelection()?.toString() || "";
         const htmlContent = `
           <p>${text}</p>
