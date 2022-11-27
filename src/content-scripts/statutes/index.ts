@@ -13,20 +13,27 @@ import { getCitation } from "./get-citation";
 // IIFE
 (async () => {
   console.log("in content script");
-  const target: [HTMLElement | null] = [null];
+
+  let leftCursor: MouseEvent | null = null;
+  let rightCursor: MouseEvent | null = null;
+
+  document.addEventListener("click", (event) => {
+    leftCursor = event;
+  });
 
   document.addEventListener("contextmenu", (event) => {
-    target[0] = event.target as HTMLElement;
+    rightCursor = event;
   });
 
   browser.runtime.onMessage.addListener(async (action: Action) => {
+    const hasRange = leftCursor?.target != null && rightCursor?.target != null;
     if (
-      target[0] != null &&
+      hasRange &&
       action.id === "legal-cite-ext" &&
       action.type === "right-click"
     ) {
       try {
-        const citation = getCitation(target[0]);
+        const citation = getCitation(rightCursor!.target as HTMLElement);
         const text: string = document.getSelection()?.toString() || "";
         const htmlContent = `
           <p>${text}</p>

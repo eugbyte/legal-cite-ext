@@ -69,14 +69,3 @@ export function getProvision(element: HTMLElement): string {
   console.log(map);
   return Array.from(map.values()).join("").replace(".", "");
 }
-
-export function getProvision2(element: HTMLElement): string {
-  const map = new Map<RegExp, string>([
-    [numDot, ""],
-    [bracketNumber, ""],
-    [bracketAlpha, ""],
-  ]);
-  backtrack(element, map);
-
-  return "";
-}
