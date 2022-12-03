@@ -10,20 +10,18 @@ const bracketAlpha = /\([A-Z]+\)/i;
  *
  * Lastly, remove the trailing empty keys from the hashmap.
  */
-function backtrack(
+function traverseUp(
   element: HTMLElement | null,
   provisionDict: Map<RegExp, string>
 ): void {
   // Base cases
   // no more parent element
   if (element == null) {
-    console.log("element is null");
     return;
   }
   // provisions are fully formed, e.g. ["5.", "(1)"]
   const isComplete = provisionDict.get(numDot) !== "";
   if (isComplete) {
-    console.log({ isComplete });
     return;
   }
 
@@ -52,23 +50,25 @@ function backtrack(
   }
 
   // Explore
-  backtrack(element.parentElement, provisionDict);
+  traverseUp(element.parentElement, provisionDict);
 }
 
 /**
  * Get an ordered map mapping the regex to matched text
+ *
+ * e.g. `{ /d+\./ : "6.", /\(-?\d+\)/ : "(1)" }` -> s 6(1)
+ *
  * @param element The HTML target element of either the left click or right click mouse event
  * @returns
  */
 export function getProvisionMap(element: HTMLElement): Map<RegExp, string> {
-  console.log(element.innerText);
   // an ordered map
   const orderedMap = new Map<RegExp, string>([
     [numDot, ""],
     [bracketNumber, ""],
     [bracketAlpha, ""],
   ]);
-  backtrack(element, orderedMap);
+  traverseUp(element, orderedMap);
   console.log(orderedMap);
   return orderedMap;
 }

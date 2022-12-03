@@ -1,5 +1,5 @@
 import { getProvisionMap } from "./get-provision-map";
-import { buildGraph as _buildGraph, stringifyGraph } from "./stringify-map";
+import { ProvisionGraph } from "./stringify-provision-map";
 
 /**
  *
@@ -14,17 +14,12 @@ export const getProvision = (
   // convert the regex map, e.g. /\d+\./ -> "2." to a string
   const leftMap: Map<RegExp, string> = getProvisionMap(leftClick);
   const rightMap: Map<RegExp, string> = getProvisionMap(rightClick);
-  console.log({ leftMap, rightMap });
 
-  const graph: Record<string, Set<string>> = {};
-  const buildGraph = _buildGraph.bind(null, graph);
-  buildGraph(leftMap);
-  console.log("left", graph);
-  buildGraph(rightMap);
-  console.log("left and right", graph);
+  const graph = new ProvisionGraph();
+  graph.buildGraph(leftMap);
+  graph.buildGraph(rightMap);
 
-  const first = Object.keys(graph)[0];
-  const provisionText = stringifyGraph(graph, first).replaceAll(".", "");
+  const provisionText = graph.stringifyGraph().replaceAll(".", "");
   console.log({ provisionText });
 
   return provisionText;

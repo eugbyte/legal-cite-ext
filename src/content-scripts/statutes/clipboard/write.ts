@@ -13,13 +13,6 @@ export const write = async (htmlContent: string, textContent: string) => {
     });
     await navigator.clipboard.write([item]);
   } else {
-    // copy(htmlContent, {
-    //   format: 'text/html',
-    // });
-    // copy(textContent, {
-    //   format: 'text/plain',
-    // });
-
     document.addEventListener("copy", (event: ClipboardEvent) => {
       (event.clipboardData as DataTransfer).setData("text/html", htmlContent);
       (event.clipboardData as DataTransfer).setData("text/plain", textContent);

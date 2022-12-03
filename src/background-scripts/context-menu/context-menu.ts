@@ -15,7 +15,6 @@ export const createContextMenu = (tabId: number) => {
   });
 
   browser.contextMenus.onClicked.addListener((info) => {
-    console.log("context menu clicked");
     switch (info.menuItemId) {
       case options.id:
         browser.tabs.sendMessage(

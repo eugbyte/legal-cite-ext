@@ -24,14 +24,6 @@ import { sortCursors } from "./get-citation/sort-cursors";
       return;
     }
     leftCursor = event;
-
-    // event.stopPropagation();
-    console.log(event.button);
-    console.log(event.target);
-    // console.log(event.button);
-    console.log({
-      leftCursorText: (leftCursor.target as HTMLElement).textContent,
-    });
   });
 
   document.addEventListener("contextmenu", (event) => {
