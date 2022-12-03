@@ -19,7 +19,7 @@ export const getProvision = (
   graph.buildGraph(leftMap);
   graph.buildGraph(rightMap);
 
-  const provisionText = graph.stringifyGraph().replaceAll(".", "");
+  const provisionText = graph.stringifyGraph();
   console.log({ provisionText });
 
   return provisionText;

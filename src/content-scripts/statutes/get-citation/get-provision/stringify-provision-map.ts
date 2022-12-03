@@ -54,7 +54,7 @@ export class ProvisionGraph {
   stringifyGraph(): string {
     const { ROOT } = this;
     const result = this._stringifyGraph(ROOT);
-    return result.replace(ROOT, "s ");
+    return result.replace(ROOT, "s ").replaceAll(".", "");
   }
 
   /**
