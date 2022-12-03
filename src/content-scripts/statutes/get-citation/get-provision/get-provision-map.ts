@@ -1,12 +1,12 @@
-const numDot = /\d+\./;
-const bracketNumber = /\(-?\d+\)/;
-const bracketAlpha = /\([A-Z]+\)/i;
+import { numDot, bracketNumber, bracketAlpha } from "./types";
 
 /**
  * We use an ordered hashmap to record the provisions found as we traverse up the DOM tree recursively using element.parentElement.
+ *
  * At the same time, when we find a provision, e.g. (2) of 5(2), we need to make sure that we don't add a provision such as "(a)",
  * when we inspect the entire textContent of the root parent element.
- * Thus, remove the trailing empty keys from the hashmap.
+ *
+ * Lastly, remove the trailing empty keys from the hashmap.
  */
 function backtrack(
   element: HTMLElement | null,
@@ -33,8 +33,7 @@ function backtrack(
   // Choose and update state
   const keys: RegExp[] = Array.from(provisionDict.keys());
 
-  for (let i = 0; i < keys.length; i++) {
-    const regex: RegExp = keys[i];
+  for (const regex of keys) {
     const isFound: boolean =
       regex.test(text) && provisionDict.get(regex) === "";
     if (!isFound) {
@@ -43,27 +42,21 @@ function backtrack(
 
     const [value] = regex.exec(text) as RegExpExecArray;
     provisionDict.set(regex, value);
-
-    // delete the empty trailing suffixes
-    // for (let j = i; j < keys.length; j++) {
-    //   if (provisionDict.get(keys[j]) === "") {
-    //     provisionDict.delete(keys[j]);
-    //   }
-    // }
   }
 
   // Explore
   backtrack(element.parentElement, provisionDict, (depth += 1));
 }
 
-export function getProvision(element: HTMLElement): string {
+export function getProvisionMap(element: HTMLElement): Map<RegExp, string> {
   console.log(element.innerText);
-  const map = new Map<RegExp, string>([
+  // an ordered map
+  const orderedDict = new Map<RegExp, string>([
     [numDot, ""],
     [bracketNumber, ""],
     [bracketAlpha, ""],
   ]);
-  backtrack(element, map);
-  console.log(map);
-  return Array.from(map.values()).join("").replace(".", "");
+  backtrack(element, orderedDict);
+  console.log(orderedDict);
+  return orderedDict;
 }

@@ -9,13 +9,14 @@ module.exports = {
   mode: prod ? "production" : "development",
   entry: {
     // pop-up ui
-    'index': './src/index.tsx',
+    index: "./src/index.tsx",
     // polyfill
-    'browser-polyfill': './node_modules/webextension-polyfill/dist/browser-polyfill.js',
+    "browser-polyfill":
+      "./node_modules/webextension-polyfill/dist/browser-polyfill.js",
     // background script
-    'background-scripts/index': './src/background-scripts/index.ts',
-    // content-script - statutes 
-    'content-scripts/statutes/index': './src/content-scripts/statutes/index.ts',
+    "background-scripts/index": "./src/background-scripts/index.ts",
+    // content-script - statutes
+    "content-scripts/statutes/index": "./src/content-scripts/statutes/index.ts",
   },
   output: {
     path: __dirname + "/build/",
@@ -55,7 +56,7 @@ module.exports = {
   devtool: prod ? undefined : "source-map",
   plugins: [
     new MiniCssExtractPlugin({
-      filename: '[name].css'
+      filename: "[name].css",
     }),
     new HtmlWebpackPlugin({
       template: "./src/public/index.html",

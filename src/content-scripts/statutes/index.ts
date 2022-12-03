@@ -2,6 +2,8 @@ import { browser } from "webextension-polyfill-ts";
 import { Action } from "~/models/Action";
 import { write } from "./clipboard";
 import { getCitation } from "./get-citation";
+import { CLICK_TYPE } from "./get-citation/get-provision";
+import { sortCursors } from "./get-citation/sort-cursors";
 
 /**
  * User flow:
@@ -13,24 +15,46 @@ import { getCitation } from "./get-citation";
 // IIFE
 (async () => {
   console.log("in content script");
-  const target: [HTMLElement | null] = [null];
+
+  let leftCursor: MouseEvent | null = null;
+  let rightCursor: MouseEvent | null = null;
+
+  document.addEventListener("mousedown", (event) => {
+    if (event.button !== CLICK_TYPE.left) {
+      return;
+    }
+    leftCursor = event;
+
+    // event.stopPropagation();
+    console.log(event.button);
+    console.log(event.target);
+    // console.log(event.button);
+    console.log({
+      leftCursorText: (leftCursor.target as HTMLElement).textContent,
+    });
+  });
 
   document.addEventListener("contextmenu", (event) => {
-    target[0] = event.target as HTMLElement;
+    rightCursor = event;
   });
 
   browser.runtime.onMessage.addListener(async (action: Action) => {
     if (
-      target[0] != null &&
+      leftCursor?.target != null &&
+      rightCursor?.target != null &&
       action.id === "legal-cite-ext" &&
       action.type === "right-click"
     ) {
       try {
-        const citation = getCitation(target[0]);
+        [leftCursor, rightCursor] = sortCursors(leftCursor, rightCursor);
+        const citation = getCitation(
+          leftCursor.target as HTMLElement,
+          rightCursor.target as HTMLElement
+        );
         const text: string = document.getSelection()?.toString() || "";
         const htmlContent = `
           <p>${text}</p>
-          <span style="color:red">${citation}
+          <p style="color:red">${citation}</p>
         `;
         await write(htmlContent, `${text}\n${citation}`);
       } catch (error) {
