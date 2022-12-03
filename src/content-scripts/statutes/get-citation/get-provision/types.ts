@@ -9,11 +9,3 @@ export enum CLICK_TYPE {
   middle,
   right,
 }
-
-/**
- * Custom Trie Node
- */
-export class Trie {
-  end = false;
-  children: Trie[] = [];
-}
