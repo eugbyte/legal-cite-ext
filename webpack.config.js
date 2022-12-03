@@ -11,7 +11,7 @@ module.exports = {
     // pop-up ui
     'index': './src/index.tsx',
     // polyfill
-    'browser-polyfill': '../../node_modules/webextension-polyfill/dist/browser-polyfill.js',
+    'browser-polyfill': './node_modules/webextension-polyfill/dist/browser-polyfill.js',
     // background script
     'background-scripts/index': './src/background-scripts/index.ts',
     // content-script - statutes 
