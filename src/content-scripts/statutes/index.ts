@@ -4,6 +4,12 @@ import { write } from "./clipboard";
 import { getCitation } from "./get-citation";
 import { sortCursors } from "./get-citation/sort-cursors";
 
+enum CLICK_TYPE {
+  left = 0,
+  middle,
+  right,
+}
+
 /**
  * User flow:
  * 1. User right clicks, triggerring context menu event in the content script
@@ -18,8 +24,19 @@ import { sortCursors } from "./get-citation/sort-cursors";
   let leftCursor: MouseEvent | null = null;
   let rightCursor: MouseEvent | null = null;
 
-  document.addEventListener("click", (event) => {
+  document.addEventListener("mousedown", (event) => {
+    if (event.button !== CLICK_TYPE.left) {
+      return;
+    }
     leftCursor = event;
+
+    // event.stopPropagation();
+    console.log(event.button);
+    console.log(event.target);
+    // console.log(event.button);
+    console.log({
+      leftCursorText: (leftCursor.target as HTMLElement).textContent,
+    });
   });
 
   document.addEventListener("contextmenu", (event) => {
