@@ -1,7 +1,7 @@
 /**
  * Find the left and right cursors from the range of text selected.
- * 
- * It is possible that the user selects the text backwards, 
+ *
+ * It is possible that the user selects the text backwards,
  * i.e. dragging the cursor left when selecting the text/
  * @returns left HTML element and right HTML element of the selected text
  */

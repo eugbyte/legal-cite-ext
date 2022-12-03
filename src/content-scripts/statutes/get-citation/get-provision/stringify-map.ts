@@ -15,17 +15,19 @@ export const buildGraph = (
   }
 
   // Initialize the root of the graph
-  if (provisions[0] in graph) {
+  if (!(provisions[0] in graph)) {
     graph[provisions[0]] = new Set<string>();
   }
   let prev: string = provisions[0];
+  console.log({ prev, graph });
 
-  console.log("begin iteration")
+  console.log("begin iteration");
 
   for (let i = 1; i < provisions.length; i++) {
     const current = provisions[i];
-    console.log({i, current});
+    console.log({ i, current, prev });
     graph[prev].add(current);
+    console.log("added");
     if (!(current in graph)) {
       graph[current] = new Set<string>();
     }
@@ -35,9 +37,9 @@ export const buildGraph = (
 
 /**
  * DFS through the graph to stringify all the children nodes, to form the provision text.
- * 
+ *
  * E.g. `{ 6. -> (1) -> [(a), (b)] }` becomes s 6(1)(a)-(b).
- * 
+ *
  * The stringification is done during the recursive return trip
  * @param graph
  * @param current

@@ -43,8 +43,11 @@ function backtrack(
     const [value] = regex.exec(text) as RegExpExecArray;
     provisionDict.set(regex, value);
 
+    // delete the empty trailing suffixes
     for (let j = i; j < keys.length; j++) {
-      
+      if (provisionDict.get(keys[j]) === "") {
+        provisionDict.delete(keys[j]);
+      }
     }
   }
 
