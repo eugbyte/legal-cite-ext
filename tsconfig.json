@@ -22,7 +22,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "strictBindCallApply": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "downlevelIteration": true,
   },
   "include": [
     "src",

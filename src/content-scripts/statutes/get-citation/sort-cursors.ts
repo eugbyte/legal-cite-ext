@@ -1,25 +1,11 @@
-const numDot = /\d+\./;
-
-function findLeftCursor(element: HTMLElement | null): HTMLElement | null {
-  if (element == null) {
-    return null;
-  }
-
-  const text: string = element?.innerText || "";
-  if (numDot.test(text)) {
-    return element;
-  }
-  return null;
-}
-
 /**
  * Find the left and right cursors from the range of text selected.
  * @returns left HTML element and right HTML element of the selected text
  */
-export function findCursors(
+export function sortCursors(
   leftClickEvent: MouseEvent,
   rightClickEvent: MouseEvent
-): [HTMLElement | null, HTMLElement | null] {
+): [MouseEvent, MouseEvent] {
   // Sort the cursors.
   // Possible to select text in reverse direction, where right click is before left click.
 
@@ -35,8 +21,5 @@ export function findCursors(
     [leftClickEvent, rightClickEvent] = [rightClickEvent, leftClickEvent];
   }
 
-  const leftCursor = leftClickEvent.target as HTMLElement | null;
-  const rightCursor = rightClickEvent.target as HTMLElement | null;
-
-  return [leftCursor, rightCursor];
+  return [leftClickEvent, rightClickEvent];
 }

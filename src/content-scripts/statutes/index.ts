@@ -2,6 +2,7 @@ import { browser } from "webextension-polyfill-ts";
 import { Action } from "~/models/Action";
 import { write } from "./clipboard";
 import { getCitation } from "./get-citation";
+import { sortCursors } from "./get-citation/sort-cursors";
 
 /**
  * User flow:
@@ -33,7 +34,11 @@ import { getCitation } from "./get-citation";
       action.type === "right-click"
     ) {
       try {
-        const citation = getCitation(rightCursor.target as HTMLElement);
+        [leftCursor, rightCursor] = sortCursors(leftCursor, rightCursor);
+        const citation = getCitation(
+          leftCursor.target as HTMLElement,
+          rightCursor.target as HTMLElement
+        );
         const text: string = document.getSelection()?.toString() || "";
         const htmlContent = `
           <p>${text}</p>
