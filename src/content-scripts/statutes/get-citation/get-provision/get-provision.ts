@@ -20,7 +20,9 @@ export const getProvision = (
 
   let provisionText = "";
   for (const set of map.values()) {
-    provisionText += [...set].join("-");
+    provisionText += [...set].filter((val) => val.trim() !== "").join("-");
   }
+  provisionText = provisionText.replaceAll(".", "");
+  console.log({provisionText});
   return provisionText.replace(".", "");
 };

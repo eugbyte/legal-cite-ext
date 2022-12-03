@@ -35,8 +35,7 @@ function backtrack(
   // Choose and update state
   const keys: RegExp[] = Array.from(provisionDict.keys());
 
-  for (let i = 0; i < keys.length; i++) {
-    const regex: RegExp = keys[i];
+  for (const regex of keys) {
     const isFound: boolean =
       regex.test(text) && provisionDict.get(regex) === "";
     if (!isFound) {
@@ -45,13 +44,6 @@ function backtrack(
 
     const [value] = regex.exec(text) as RegExpExecArray;
     provisionDict.set(regex, value);
-
-    // delete the empty trailing keys
-    // for (let j = i; j < keys.length; j++) {
-    //   if (provisionDict.get(keys[j]) === "") {
-    //     provisionDict.delete(keys[j]);
-    //   }
-    // }
   }
 
   // Explore
@@ -61,12 +53,12 @@ function backtrack(
 export function getProvisionMap(element: HTMLElement): Map<RegExp, string> {
   console.log(element.innerText);
   // an ordered map
-  const map = new Map<RegExp, string>([
+  const orderedDict = new Map<RegExp, string>([
     [numDot, ""],
     [bracketNumber, ""],
     [bracketAlpha, ""],
   ]);
-  backtrack(element, map);
-  console.log(map);
-  return map;
+  backtrack(element, orderedDict);
+  console.log(orderedDict);
+  return orderedDict;
 }
