@@ -10,11 +10,8 @@ import { numDot, bracketNumber, bracketAlpha } from "./types";
  */
 function backtrack(
   element: HTMLElement | null,
-  provisionDict: Map<RegExp, string>,
-  depth = 0
+  provisionDict: Map<RegExp, string>
 ): void {
-  console.log({ depth });
-
   // Base cases
   // no more parent element
   if (element == null) {
@@ -45,9 +42,14 @@ function backtrack(
   }
 
   // Explore
-  backtrack(element.parentElement, provisionDict, (depth += 1));
+  backtrack(element.parentElement, provisionDict);
 }
 
+/**
+ * Get an ordered dict mapping the regex
+ * @param element The HTML target element of either the left click or right click mouse event
+ * @returns
+ */
 export function getProvisionMap(element: HTMLElement): Map<RegExp, string> {
   console.log(element.innerText);
   // an ordered map

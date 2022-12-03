@@ -16,6 +16,6 @@ export const getCitation = (
   const revEdYear = getRevEdYear(); // 2020 Rev Ed
   const provisionText = getProvision(leftCursor, rightCursor);
 
-  const citation = `${chapter} (${revEdYear}) s ${provisionText}`; // Personal Data Protection Act 2012 (2020 Rev Ed) s 2(1)
+  const citation = `${chapter} (${revEdYear}) ${provisionText}`; // Personal Data Protection Act 2012 (2020 Rev Ed) s 2(1)
   return citation.replace(/\n+/g, ""); // remove line breaks
 };
