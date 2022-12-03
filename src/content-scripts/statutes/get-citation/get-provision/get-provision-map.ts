@@ -1,6 +1,4 @@
-const numDot = /\d+\./;
-const bracketNumber = /\(-?\d+\)/;
-const bracketAlpha = /\([A-Z]+\)/i;
+import { numDot, bracketNumber, bracketAlpha } from "./types";
 
 /**
  * We use an ordered hashmap to record the provisions found as we traverse up the DOM tree recursively using element.parentElement.

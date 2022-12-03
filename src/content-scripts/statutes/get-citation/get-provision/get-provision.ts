@@ -23,6 +23,6 @@ export const getProvision = (
     provisionText += [...set].filter((val) => val.trim() !== "").join("-");
   }
   provisionText = provisionText.replaceAll(".", "");
-  console.log({provisionText});
+  console.log({ provisionText });
   return provisionText.replace(".", "");
 };
