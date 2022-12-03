@@ -1,4 +1,6 @@
-import { numDot, bracketNumber, bracketAlpha } from "./types";
+const numDot = /\d+\./;
+const bracketNumber = /\(-?\d+\)/;
+const bracketAlpha = /\([A-Z]+\)/i;
 
 /**
  * We use an ordered hashmap to record the provisions found as we traverse up the DOM tree recursively using element.parentElement.
@@ -30,7 +32,8 @@ function backtrack(
   // Choose and update state
   const keys: RegExp[] = Array.from(provisionDict.keys());
 
-  for (const regex of keys) {
+  for (let i = 0; i < keys.length; i++) {
+    const regex = keys[i];
     const isFound: boolean =
       regex.test(text) && provisionDict.get(regex) === "";
     if (!isFound) {
@@ -39,6 +42,10 @@ function backtrack(
 
     const [value] = regex.exec(text) as RegExpExecArray;
     provisionDict.set(regex, value);
+
+    for (let j = i; j < keys.length; j++) {
+      
+    }
   }
 
   // Explore
@@ -46,19 +53,19 @@ function backtrack(
 }
 
 /**
- * Get an ordered dict mapping the regex
+ * Get an ordered map mapping the regex to matched text
  * @param element The HTML target element of either the left click or right click mouse event
  * @returns
  */
 export function getProvisionMap(element: HTMLElement): Map<RegExp, string> {
   console.log(element.innerText);
   // an ordered map
-  const orderedDict = new Map<RegExp, string>([
+  const orderedMap = new Map<RegExp, string>([
     [numDot, ""],
     [bracketNumber, ""],
     [bracketAlpha, ""],
   ]);
-  backtrack(element, orderedDict);
-  console.log(orderedDict);
-  return orderedDict;
+  backtrack(element, orderedMap);
+  console.log(orderedMap);
+  return orderedMap;
 }
