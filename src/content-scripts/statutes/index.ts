@@ -2,7 +2,6 @@ import { browser } from "webextension-polyfill-ts";
 import { Action } from "~/models/Action";
 import { write } from "./clipboard";
 import { getCitation } from "./get-citation";
-import { CLICK_TYPE } from "./get-citation/get-provision";
 import { sortCursors } from "./get-citation/sort-cursors";
 
 /**
@@ -20,18 +19,10 @@ import { sortCursors } from "./get-citation/sort-cursors";
   let rightCursor: MouseEvent | null = null;
 
   document.addEventListener("mousedown", (event) => {
-    if (event.button !== CLICK_TYPE.left) {
-      return;
+    const LEFT_CLICK = 0;
+    if (event.button === LEFT_CLICK) {
+      leftCursor = event;
     }
-    leftCursor = event;
-
-    // event.stopPropagation();
-    console.log(event.button);
-    console.log(event.target);
-    // console.log(event.button);
-    console.log({
-      leftCursorText: (leftCursor.target as HTMLElement).textContent,
-    });
   });
 
   document.addEventListener("contextmenu", (event) => {

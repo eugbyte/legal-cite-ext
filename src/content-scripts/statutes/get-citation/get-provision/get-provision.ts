@@ -1,28 +1,29 @@
 import { getProvisionMap } from "./get-provision-map";
+import { ProvisionGraph } from "./stringify-provision-map";
 
+/**
+ * Two steps to get the provision
+ * 1. Get the regex matches while traversing upwards through the DOM, for each left click target HTMLElement and right click target HTMLElement
+ * 2. Create a graph of nodes, with each node representing a provision, e.g. 6 -> (1) -> [(a), (b)]
+ * @param leftClick The HTML target element from the left click event
+ * @param rightClick The HTML target element from the right click event
+ * @returns The fully formed provision
+ */
 export const getProvision = (
   leftClick: HTMLElement,
   rightClick: HTMLElement
-) => {
-  // merge the hashmaps from the left and right clicks
-  // the hashmaps maps the regex to whatever is detected in the range of text selected
-  // e.g.  /\d+\./ -> "2."
+): string => {
+  // convert the regex map, e.g. /\d+\./ -> "2." to a string
   const leftMap: Map<RegExp, string> = getProvisionMap(leftClick);
   const rightMap: Map<RegExp, string> = getProvisionMap(rightClick);
-  const map = new Map<RegExp, Set<string>>();
+  console.log({ leftMap, rightMap });
 
-  for (const [key, value] of [...leftMap.entries(), ...rightMap.entries()]) {
-    if (!map.has(key)) {
-      map.set(key, new Set<string>());
-    }
-    map.get(key)?.add(value);
-  }
+  const graph = new ProvisionGraph();
+  graph.buildGraph(leftMap);
+  graph.buildGraph(rightMap);
 
-  let provisionText = "";
-  for (const set of map.values()) {
-    provisionText += [...set].filter((val) => val.trim() !== "").join("-");
-  }
-  provisionText = provisionText.replaceAll(".", "");
+  const provisionText: string = graph.toString();
   console.log({ provisionText });
-  return provisionText.replace(".", "");
+
+  return provisionText;
 };

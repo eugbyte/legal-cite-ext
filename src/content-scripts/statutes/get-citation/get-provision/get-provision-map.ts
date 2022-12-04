@@ -1,4 +1,6 @@
-import { numDot, bracketNumber, bracketAlpha } from "./types";
+const numDot = /\d+\./;
+const bracketNumber = /\(-?\d+\)/;
+const bracketAlpha = /\([A-Z]+\)/i;
 
 /**
  * We use an ordered hashmap to record the provisions found as we traverse up the DOM tree recursively using element.parentElement.
@@ -8,23 +10,18 @@ import { numDot, bracketNumber, bracketAlpha } from "./types";
  *
  * Lastly, remove the trailing empty keys from the hashmap.
  */
-function backtrack(
+function traverseUp(
   element: HTMLElement | null,
-  provisionDict: Map<RegExp, string>,
-  depth = 0
+  provisionDict: Map<RegExp, string>
 ): void {
-  console.log({ depth });
-
   // Base cases
   // no more parent element
   if (element == null) {
-    console.log("element is null");
     return;
   }
   // provisions are fully formed, e.g. ["5.", "(1)"]
   const isComplete = provisionDict.get(numDot) !== "";
   if (isComplete) {
-    console.log({ isComplete });
     return;
   }
 
@@ -33,7 +30,8 @@ function backtrack(
   // Choose and update state
   const keys: RegExp[] = Array.from(provisionDict.keys());
 
-  for (const regex of keys) {
+  for (let i = 0; i < keys.length; i++) {
+    const regex = keys[i];
     const isFound: boolean =
       regex.test(text) && provisionDict.get(regex) === "";
     if (!isFound) {
@@ -42,21 +40,35 @@ function backtrack(
 
     const [value] = regex.exec(text) as RegExpExecArray;
     provisionDict.set(regex, value);
+
+    // delete the empty trailing suffixes
+    for (let j = i; j < keys.length; j++) {
+      if (provisionDict.get(keys[j]) === "") {
+        provisionDict.delete(keys[j]);
+      }
+    }
   }
 
   // Explore
-  backtrack(element.parentElement, provisionDict, (depth += 1));
+  traverseUp(element.parentElement, provisionDict);
 }
 
+/**
+ * Get an ordered map mapping the regex to matched text
+ *
+ * e.g. `{ /d+\./ : "6.", /\(-?\d+\)/ : "(1)" }` -> s 6(1)
+ *
+ * @param element The HTML target element of either the left click or right click mouse event
+ * @returns
+ */
 export function getProvisionMap(element: HTMLElement): Map<RegExp, string> {
-  console.log(element.innerText);
   // an ordered map
-  const orderedDict = new Map<RegExp, string>([
+  const orderedMap = new Map<RegExp, string>([
     [numDot, ""],
     [bracketNumber, ""],
     [bracketAlpha, ""],
   ]);
-  backtrack(element, orderedDict);
-  console.log(orderedDict);
-  return orderedDict;
+  traverseUp(element, orderedMap);
+  console.log(orderedMap);
+  return orderedMap;
 }
