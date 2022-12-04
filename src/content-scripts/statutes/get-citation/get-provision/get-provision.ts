@@ -16,6 +16,7 @@ export const getProvision = (
   // convert the regex map, e.g. /\d+\./ -> "2." to a string
   const leftMap: Map<RegExp, string> = getProvisionMap(leftClick);
   const rightMap: Map<RegExp, string> = getProvisionMap(rightClick);
+  console.log({ leftMap, rightMap });
 
   const graph = new ProvisionGraph();
   graph.buildGraph(leftMap);

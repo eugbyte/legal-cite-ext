@@ -18,9 +18,9 @@ export class ProvisionGraph {
 
   /**
    * Build the provision graph, e.g. 6 -> a -> [(i),(ii)], so that we can do a dfs later to stringify the graph.
-   * 
+   *
    * The building of the graph is done as a side effect.
-   * 
+   *
    * The graph is non-disjointed.
    * @param provisionMap the ordered dict mapping the regex to the matches found, e.g. `{ /d+\./ : "6.", /\(-?\d+\)/ : "(1)" }`
    * @returns
