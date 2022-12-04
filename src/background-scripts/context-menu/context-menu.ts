@@ -5,7 +5,6 @@ export const createContextMenu = (tabId: number) => {
   const options = {
     id: "legal-cite-ext",
     title: "Copy with source",
-    contexts: ["selection"],
   };
 
   browser.contextMenus.create({
@@ -19,7 +18,7 @@ export const createContextMenu = (tabId: number) => {
       case options.id:
         browser.tabs.sendMessage(
           tabId,
-          new Action("legal-cite-ext", "right-click")
+          new Action(options.id, "right-click")
         );
         break;
       default:

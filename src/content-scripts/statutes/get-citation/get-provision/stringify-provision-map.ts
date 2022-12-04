@@ -7,18 +7,20 @@ export class ProvisionGraph {
   /**
    * A non-disjointed graph of nodes representing the flow of the provision
    */
-  graph: Record<string, Set<string>> = {
+  private graph: Record<string, Set<string>> = {
     root: new Set<string>(),
   };
 
   /**
    * The value of the root node for the non-disjointed graph
    */
-  ROOT = "root";
+  private ROOT = "root";
 
   /**
    * Build the provision graph, e.g. 6 -> a -> [(i),(ii)], so that we can do a dfs later to stringify the graph.
+   * 
    * The building of the graph is done as a side effect.
+   * 
    * The graph is non-disjointed.
    * @param provisionMap the ordered dict mapping the regex to the matches found, e.g. `{ /d+\./ : "6.", /\(-?\d+\)/ : "(1)" }`
    * @returns
@@ -34,7 +36,7 @@ export class ProvisionGraph {
     let prev = ROOT;
 
     for (let i = 0; i < provisions.length; i++) {
-      const current = provisions[i];
+      const current: string = provisions[i];
       graph[prev].add(current);
       if (!(current in graph)) {
         graph[current] = new Set<string>();
@@ -51,20 +53,20 @@ export class ProvisionGraph {
    * The stringification is done during the recursive return trip
    * @returns
    */
-  stringifyGraph(): string {
+  toString(): string {
     const { ROOT } = this;
-    const result = this._stringifyGraph(ROOT);
+    const result = this._toString(ROOT);
     return result.replace(ROOT, "s ").replaceAll(".", "");
   }
 
   /**
    * The recursive implementation of stringifyGraph
-   * @see stringifyGraph
+   * @see toString
    * @param current the current node during the recursion
    * @param depth optional, the depth of the iteration
    * @returns
    */
-  private _stringifyGraph(current: string, depth = 0): string {
+  private _toString(current: string, depth = 0): string {
     const { graph } = this;
     // base case
     if (current == null) {
@@ -75,7 +77,7 @@ export class ProvisionGraph {
     const children: Set<string> = graph[current];
 
     for (const node of children) {
-      const text = this._stringifyGraph(node, depth + 1);
+      const text = this._toString(node, depth + 1);
       texts.push(text);
     }
 

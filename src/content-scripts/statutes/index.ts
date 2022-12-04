@@ -20,10 +20,9 @@ import { sortCursors } from "./get-citation/sort-cursors";
 
   document.addEventListener("mousedown", (event) => {
     const LEFT_CLICK = 0;
-    if (event.button !== LEFT_CLICK) {
-      return;
+    if (event.button === LEFT_CLICK) {
+      leftCursor = event;
     }
-    leftCursor = event;
   });
 
   document.addEventListener("contextmenu", (event) => {
