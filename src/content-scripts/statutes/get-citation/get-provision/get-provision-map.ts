@@ -41,7 +41,7 @@ function traverseUp(
     const [value] = regex.exec(text) as RegExpExecArray;
     provisionDict.set(regex, value);
 
-    // delete the empty trailing suffixes
+    // delete the empty trailing keys in the ordered dict
     for (let j = i; j < keys.length; j++) {
       if (provisionDict.get(keys[j]) === "") {
         provisionDict.delete(keys[j]);
@@ -50,7 +50,8 @@ function traverseUp(
   }
 
   // Explore
-  traverseUp(element.parentElement, provisionDict);
+  const next: HTMLElement | null = element.parentElement;
+  traverseUp(next, provisionDict);
 }
 
 /**
