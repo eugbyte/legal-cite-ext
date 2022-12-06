@@ -3,7 +3,7 @@ import { Action } from "~/models/Action";
 import { write } from "./clipboard";
 import { formatHTML } from "./format-html";
 import { getCitation } from "./get-citation";
-import { sortCursors } from "./sort-cursors/sort-cursors";
+import { sortCursors } from "./sort-cursors";
 
 /**
  * User flow:
