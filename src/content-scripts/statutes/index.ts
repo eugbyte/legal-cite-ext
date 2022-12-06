@@ -39,7 +39,7 @@ import { sortCursors } from "./sort-cursors/sort-cursors";
     ) {
       try {
         [leftCursor, rightCursor] = sortCursors(leftCursor, rightCursor);
-        const citation = getCitation(
+        const citation: string = getCitation(
           leftCursor.target as HTMLElement,
           rightCursor.target as HTMLElement
         );

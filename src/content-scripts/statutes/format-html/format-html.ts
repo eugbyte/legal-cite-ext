@@ -1,3 +1,9 @@
+/**
+ * Colors the HTML encoded text red, and italicize the bracket portions of the provisions, e.g (a)
+ * @param selection the text selection of the document
+ * @param citation the citation, e.g. "s 6(a)"
+ * @returns The HTML encoded text
+ */
 export const formatHTML = (selection: string, citation: string) => {
   const bracketAlpha = /\([A-Z]+\)/gi;
 
@@ -10,6 +16,7 @@ export const formatHTML = (selection: string, citation: string) => {
 
   let result = "";
   let index = 0;
+  
   while (index < citation.length && queue.length > 0) {
     const [start, end] = queue[0];
     const inRange = start <= index && index <= end;
