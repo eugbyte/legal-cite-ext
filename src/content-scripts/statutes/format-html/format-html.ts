@@ -27,7 +27,8 @@ export const formatHTML = (selection: string, citation: string) => {
       queue.shift();
       let italic = citation.slice(start, end + 1); // "(e)"
       italic = italic.slice(1, italic.length - 1); // "e"
-      result += `(<i>${italic}</i>)`; // "(<i>e</i>)"
+      italic = `<i>${italic}</i>` // "<i>e</i>"
+      result += `(${italic})`; // "(<i>e</i>)"
       index += end - start + 1;
     }
   }
