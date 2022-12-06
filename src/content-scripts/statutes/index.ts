@@ -1,8 +1,9 @@
 import { browser } from "webextension-polyfill-ts";
 import { Action } from "~/models/Action";
 import { write } from "./clipboard";
+import { formatHTML } from "./format-html";
 import { getCitation } from "./get-citation";
-import { sortCursors } from "./get-citation/sort-cursors";
+import { sortCursors } from "./sort-cursors";
 
 /**
  * User flow:
@@ -13,8 +14,6 @@ import { sortCursors } from "./get-citation/sort-cursors";
 
 // IIFE
 (async () => {
-  console.log("in content script");
-
   let leftCursor: MouseEvent | null = null;
   let rightCursor: MouseEvent | null = null;
 
@@ -38,15 +37,13 @@ import { sortCursors } from "./get-citation/sort-cursors";
     ) {
       try {
         [leftCursor, rightCursor] = sortCursors(leftCursor, rightCursor);
-        const citation = getCitation(
+        const citation: string = getCitation(
           leftCursor.target as HTMLElement,
           rightCursor.target as HTMLElement
         );
         const text: string = document.getSelection()?.toString() || "";
-        const htmlContent = `
-          <p>${text}</p>
-          <p style="color:red">${citation}</p>
-        `;
+        const htmlContent = formatHTML(text, citation);
+
         await write(htmlContent, `${text}\n${citation}`);
       } catch (error) {
         console.log(error);
