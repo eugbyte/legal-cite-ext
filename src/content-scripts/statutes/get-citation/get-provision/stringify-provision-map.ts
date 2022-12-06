@@ -1,3 +1,4 @@
+import cloneDeep from "lodash.clonedeep";
 /**
  * A graph representing the way the provisions are connected,
  * e.g. `2. -> (a) -> (i)`, forms "s 2(a)(i)".
@@ -5,11 +6,19 @@
  */
 export class ProvisionGraph {
   /**
-   * A non-disjointed graph of nodes representing the flow of the provision
+   * A non-disjointed graph of nodes representing the components of the provision.
+   * e.g. `2. -> (a) -> (i)`, forms "s 2(a)(i)".
    */
   private graph: Record<string, Set<string>> = {
     root: new Set<string>(),
   };
+
+  /**
+   * Returns a deep copy of the non-disjointed graph
+   */
+  public get graphCopy(): Record<string, Set<string>> {
+    return cloneDeep(this.graph);
+  }
 
   /**
    * The value of the root node for the non-disjointed graph
@@ -22,12 +31,12 @@ export class ProvisionGraph {
    * The building of the graph is done as a side effect.
    *
    * The graph is non-disjointed.
-   * @param provisionMap the ordered dict mapping the regex to the matches found, e.g. `{ /d+\./ : "6.", /\(-?\d+\)/ : "(1)" }`
+   * @param matches the ordered dict mapping the regex to the matches found, e.g. `{ /d+\./ : "6.", /\(-?\d+\)/ : "(1)" }`
    * @returns
    */
-  buildGraph(provisionMap: Map<RegExp, string>): void {
+  buildGraph(matches: Map<RegExp, string>): void {
     const { graph, ROOT } = this;
-    const provisions: string[] = [...provisionMap.values()];
+    const provisions: string[] = [...matches.values()];
     if (provisions.length === 0) {
       return;
     }
@@ -60,7 +69,7 @@ export class ProvisionGraph {
   }
 
   /**
-   * The recursive implementation of stringifyGraph
+   * The recursive implementation of `toString()`
    * @see toString
    * @param current the current node during the recursion
    * @param depth optional, the depth of the iteration

@@ -1,6 +1,6 @@
-const numDot = /^\d+\./;
-const bracketNumber = /^\(-?\d+\)/;
-const bracketAlpha = /^\([A-Z]+\)/i;
+export const numDot = /^\d+\./;
+export const bracketNumber = /^\(-?\d+\)/;
+export const bracketAlpha = /^\([A-Z]+\)/i;
 
 /**
  * We use an ordered hashmap to record the provisions found as we traverse up the DOM tree recursively using element.parentElement.
