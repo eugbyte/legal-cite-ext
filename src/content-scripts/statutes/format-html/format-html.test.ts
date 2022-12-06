@@ -7,7 +7,7 @@ describe(" test formatHTML", () => {
     const citation = "s 6(d)-(f)";
     const htmlContent = `
         <p>${selection}</p>
-        <p style="color:red">s 6<i>(d)</i>-<i>(f)</i></p>
+        <p style="color:red">s 6(<i>d</i>)-(<i>f</i>)</p>
       `;
     const received = formatHTML(selection, citation);
     expect(received).toBe(htmlContent);
