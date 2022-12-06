@@ -38,7 +38,7 @@ export const formatHTML = (selection: string, citation: string) => {
   }
 
   const htmlContent = `
-        <p style="white-space: pre-line">${selection}</p>
+        <p>${selection}</p>
         <p style="color:red">${result}</p>
       `;
 
