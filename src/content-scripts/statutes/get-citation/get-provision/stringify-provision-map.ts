@@ -14,7 +14,8 @@ export class ProvisionGraph {
   };
 
   /**
-   * Returns a deep copy of the non-disjointed graph
+   * Returns a deep copy of the non-disjointed graph.
+   * Mainly used for debugging purpose.
    */
   public get graphCopy(): Record<string, Set<string>> {
     return cloneDeep(this.graph);
@@ -90,6 +91,7 @@ export class ProvisionGraph {
       texts.push(text);
     }
 
+    // the texts[] will have maximum of length 2, as for each left and right cursor target element, we collect only the first regex match
     const result = current + texts.join("-");
     return result;
   }

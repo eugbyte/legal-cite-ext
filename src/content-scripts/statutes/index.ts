@@ -1,8 +1,9 @@
 import { browser } from "webextension-polyfill-ts";
 import { Action } from "~/models/Action";
 import { write } from "./clipboard";
+import { formatHTML } from "./format-html";
 import { getCitation } from "./get-citation";
-import { sortCursors } from "./get-citation/sort-cursors";
+import { sortCursors } from "./sort-cursors/sort-cursors";
 
 /**
  * User flow:
@@ -43,10 +44,8 @@ import { sortCursors } from "./get-citation/sort-cursors";
           rightCursor.target as HTMLElement
         );
         const text: string = document.getSelection()?.toString() || "";
-        const htmlContent = `
-          <p>${text}</p>
-          <p style="color:red">${citation}</p>
-        `;
+        const htmlContent = formatHTML(text, citation);
+
         await write(htmlContent, `${text}\n${citation}`);
       } catch (error) {
         console.log(error);
