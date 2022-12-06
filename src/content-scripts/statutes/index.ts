@@ -14,8 +14,6 @@ import { sortCursors } from "./sort-cursors/sort-cursors";
 
 // IIFE
 (async () => {
-  console.log("in content script");
-
   let leftCursor: MouseEvent | null = null;
   let rightCursor: MouseEvent | null = null;
 

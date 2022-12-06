@@ -70,6 +70,5 @@ export function getProvisionMap(element: HTMLElement): Map<RegExp, string> {
     [bracketAlpha, ""],
   ]);
   traverseUp(element, orderedMap);
-  console.log(orderedMap);
   return orderedMap;
 }
