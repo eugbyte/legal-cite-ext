@@ -16,7 +16,10 @@ export const createContextMenu = (tabId: number) => {
   browser.contextMenus.onClicked.addListener((info) => {
     switch (info.menuItemId) {
       case options.id:
-        browser.tabs.sendMessage(tabId, new Action(options.id, "right-click"));
+        browser.tabs.sendMessage(
+          tabId,
+          new Action(options.id, "copy-with-source")
+        );
         break;
       default:
         break;
