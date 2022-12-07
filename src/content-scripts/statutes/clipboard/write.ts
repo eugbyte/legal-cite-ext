@@ -13,11 +13,18 @@ export const write = async (htmlContent: string, textContent: string) => {
     });
     await navigator.clipboard.write([item]);
   } else {
-    document.addEventListener("copy", (event: ClipboardEvent) => {
-      (event.clipboardData as DataTransfer).setData("text/html", htmlContent);
-      (event.clipboardData as DataTransfer).setData("text/plain", textContent);
-      event.preventDefault();
-    });
+    document.addEventListener(
+      "copy",
+      (event: ClipboardEvent) => {
+        (event.clipboardData as DataTransfer).setData("text/html", htmlContent);
+        (event.clipboardData as DataTransfer).setData(
+          "text/plain",
+          textContent
+        );
+        event.preventDefault();
+      },
+      { once: true }
+    );
 
     document.execCommand("copy");
   }
