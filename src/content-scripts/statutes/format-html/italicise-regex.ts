@@ -1,4 +1,4 @@
-// 
+//
 /**
  * Ensure that sub-provisions have italicised letters, e.g. (e),
  * as per 2–2.1.6 of Style Guide for the SINGAPORE LAW REPORTS, 2021 Edition
