@@ -1,4 +1,11 @@
-// sub-provisions have italicised letters, e.g. (a)
+// 
+/**
+ * Ensure that sub-provisions have italicised letters, e.g. (e),
+ * as per 2–2.1.6 of Style Guide for the SINGAPORE LAW REPORTS, 2021 Edition
+ * @param citation the citation, e.g. s 2(e)
+ * @param regex the regex expression that matches the sub-provisions, e.g. `/\([A-Z]+\)/gi` for (a)
+ * @returns the transformed string with <i></i> tags within, e.g. "s 2(<i>e</i>)""
+ */
 export const italiciseRegexMatches = (citation: string, regex: RegExp) => {
   const queue: [number, number][] = [...citation.matchAll(regex)].map(
     (match) => [
