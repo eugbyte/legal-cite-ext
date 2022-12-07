@@ -33,7 +33,7 @@ import { sortCursors } from "./sort-cursors";
       leftCursor?.target != null &&
       rightCursor?.target != null &&
       action.id === "legal-cite-ext" &&
-      action.type === "right-click"
+      action.type === "copy-with-source"
     ) {
       try {
         [leftCursor, rightCursor] = sortCursors(leftCursor, rightCursor);
@@ -41,7 +41,9 @@ import { sortCursors } from "./sort-cursors";
           leftCursor.target as HTMLElement,
           rightCursor.target as HTMLElement
         );
+
         const text: string = document.getSelection()?.toString() || "";
+        console.log({ text: JSON.stringify(text) });
         const htmlContent = formatHTML(text, citation);
 
         await write(htmlContent, `${text}\n${citation}`);

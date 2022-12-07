@@ -6,8 +6,21 @@
  */
 export const formatHTML = (selection: string, citation: string) => {
   const bracketAlpha = /\([A-Z]+\)/gi;
+  const result = italiciseRegexMatches(citation, bracketAlpha);
 
-  const queue: [number, number][] = [...citation.matchAll(bracketAlpha)].map(
+  // Line breaks are ignored when copied from getSelection
+  const paras: string[] = selection.split("\n").map((text) => `<p>${text}</p>`);
+  console.log({ paras });
+  const htmlContent = `
+        <div>${paras.join("")}</div>
+        <p style="color:red">${result}</p>
+      `;
+
+  return htmlContent;
+};
+
+const italiciseRegexMatches = (citation: string, regex: RegExp) => {
+  const queue: [number, number][] = [...citation.matchAll(regex)].map(
     (match) => [
       match.index as number,
       (match.index as number) + match[0].length - 1,
@@ -36,11 +49,5 @@ export const formatHTML = (selection: string, citation: string) => {
   if (index != citation.length) {
     result += citation.slice(index);
   }
-
-  const htmlContent = `
-        <p>${selection}</p>
-        <p style="color:red">${result}</p>
-      `;
-
-  return htmlContent;
+  return result;
 };
