@@ -15,6 +15,7 @@ export const italiciseRegexMatches = (citation: string, regex: RegExp) => {
   );
 
   let result = "";
+  // index to iterate through the citation string
   let index = 0;
 
   while (index < citation.length && queue.length > 0) {
