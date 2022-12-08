@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env webpack serve --port 3000",
     "build": "cross-env NODE_ENV=production webpack",
     "test": "jest",
     "lint": "eslint .  --ext .js,.ts,.tsx .eslintrc.js",
