@@ -12,6 +12,6 @@ describe("test ProvisionGraph", () => {
     const trie = new ProvisionTrie();
     trie.add(orderedMap);
     const text = trie.toString();
-    expect(text).toBe("s 8(2)(a)");
+    expect(text).toBe("8.(2)(a)");
   });
 });
