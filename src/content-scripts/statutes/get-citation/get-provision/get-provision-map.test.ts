@@ -57,7 +57,7 @@ describe("test getProvisionMap", () => {
     const orderedMap = new Map<RegExp, string>([
       [numDot, "8."],
       [bracketNumber, "(2)"],
-      [bracketAlpha, "(a)"],
+      [bracketAlpha, "(__)"],
       [roman, "(i)"],
     ]);
 
@@ -85,6 +85,7 @@ describe("test getProvisionMap", () => {
     const orderedMap = new Map<RegExp, string>([
       [numDot, "8."],
       [bracketNumber, "(2)"],
+      [bracketAlpha, "(__)"],
       [roman, "(i)"],
     ]);
 

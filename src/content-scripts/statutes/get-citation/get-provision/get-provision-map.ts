@@ -74,7 +74,7 @@ function traverseUp(
      * So (a) is in a table, and (ii) is in another nested table.
      */
     if (regex == roman) {
-      element = findEnclosingTable(element);
+      provisionDict.set(bracketAlpha, "(__)");
       break;
     }
   }
@@ -83,16 +83,3 @@ function traverseUp(
   const next = element?.parentElement as HTMLElement | null;
   traverseUp(next, provisionDict);
 }
-
-/**
- * @warning Fragile code workaround to handle regex overlap between bracketAlpha and roman regex, e.g. for "(i)"
- * @param _element The HTML element where the roman numeral regex is detected
- * @returns The nearest enclosing parent <table> element
- */
-const findEnclosingTable = (_element: HTMLElement | null) => {
-  let element = _element;
-  while (element != null && element.tagName !== "TABLE") {
-    element = element.parentElement;
-  }
-  return element;
-};
