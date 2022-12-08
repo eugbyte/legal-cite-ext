@@ -31,7 +31,7 @@ export class ProvisionTrie {
    * @param current the current node during the recursion
    * @returns The Trie Node of the matching provison, or null if not found
    */
-  search(
+  getTrieNode(
     provision: string,
     current: ProvisionTrie = this
   ): ProvisionTrie | null {
@@ -45,7 +45,7 @@ export class ProvisionTrie {
     }
 
     for (const provision in children) {
-      const res = this.search(provision, children[provision]);
+      const res = this.getTrieNode(provision, children[provision]);
       if (res != null) {
         return res;
       }
