@@ -23,7 +23,7 @@ export const getProvision = (
   trie.add(rightMap);
 
   let provisionText = trie.toString();
-  provisionText = `s ${provisionText}`.replaceAll(".", "");
+  provisionText = `s ${provisionText}`.replaceAll(".", "").replaceAll("—", "");
   console.log({ trieText: provisionText });
 
   return provisionText;

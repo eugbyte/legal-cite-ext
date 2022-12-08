@@ -1,5 +1,5 @@
 export const numDot = /^\d+\./;
-export const bracketNumber = /^\(-?\d+\)/;
+export const bracketNumber = /^—?\(\d+\)/;
 export const bracketAlpha = /^\([A-Z]+\)/i;
 
 /**
