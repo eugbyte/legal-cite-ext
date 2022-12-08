@@ -1,5 +1,5 @@
 import { getProvisionMap } from "./get-provision-map";
-import { ProvisionGraph } from "./stringify-provision-map";
+import { ProvisionTrie } from "./stringify-provision-map";
 
 /**
  * Two steps to get the provision
@@ -18,12 +18,13 @@ export const getProvision = (
   const rightMap: Map<RegExp, string> = getProvisionMap(rightClick);
   console.log({ leftMap, rightMap });
 
-  const graph = new ProvisionGraph();
-  graph.buildGraph(leftMap);
-  graph.buildGraph(rightMap);
+  const trie = new ProvisionTrie();
+  trie.add(leftMap);
+  trie.add(rightMap);
 
-  const provisionText: string = graph.toString();
-  console.log({ provisionText });
+  let provisionText = trie.toString();
+  provisionText = `s ${provisionText}`.replaceAll(".", "");
+  console.log({ trieText: provisionText });
 
   return provisionText;
 };
