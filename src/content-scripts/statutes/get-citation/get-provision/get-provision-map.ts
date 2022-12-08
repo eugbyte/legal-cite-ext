@@ -75,7 +75,6 @@ function traverseUp(
      */
     if (regex == roman) {
       provisionDict.set(bracketAlpha, "(__)");
-      break;
     }
   }
 
