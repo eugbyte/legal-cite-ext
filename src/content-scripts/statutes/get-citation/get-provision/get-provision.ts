@@ -1,5 +1,5 @@
 import { getProvisionMap } from "./get-provision-map";
-import { Trie } from "./stringify-provision-map";
+import { ProvisionTrie } from "./stringify-provision-map";
 
 /**
  * Two steps to get the provision
@@ -18,7 +18,7 @@ export const getProvision = (
   const rightMap: Map<RegExp, string> = getProvisionMap(rightClick);
   console.log({ leftMap, rightMap });
 
-  const trie = new Trie();
+  const trie = new ProvisionTrie();
   trie.add(leftMap);
   trie.add(rightMap);
 

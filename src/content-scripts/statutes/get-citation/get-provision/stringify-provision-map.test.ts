@@ -1,5 +1,5 @@
 import { numDot, bracketNumber, bracketAlpha } from "./get-provision-map";
-import { Trie } from "./stringify-provision-map";
+import { ProvisionTrie } from "./stringify-provision-map";
 
 describe("test ProvisionGraph", () => {
   it("ProvisionGraph should return provision of s 8(2)(a)", () => {
@@ -9,7 +9,7 @@ describe("test ProvisionGraph", () => {
       [bracketAlpha, "(a)"],
     ]);
 
-    const trie = new Trie();
+    const trie = new ProvisionTrie();
     trie.add(orderedMap);
     const text = trie.toString();
     expect(text).toBe("s 8(2)(a)");

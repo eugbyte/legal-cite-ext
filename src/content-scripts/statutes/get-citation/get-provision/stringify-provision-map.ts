@@ -5,20 +5,20 @@
  *
  * Purpose of this class is to stringify the provision ordered maps.
  */
-export class Trie {
+export class ProvisionTrie {
   end = false;
-  children: Record<string, Trie> = {};
+  children: Record<string, ProvisionTrie> = {};
 
   /**
    * Build the Trie, e.g. 6 -> a -> [(i),(ii)], so that we can do a dfs later to stringify the Trie.
    * @param provisionMap the ordered dict mapping the regex to the matches found, e.g. `{ /d+\./ : "6.", /\(-?\d+\)/ : "(1)" }`
    */
   add(provisionMap: Map<RegExp, string>): void {
-    let current: Trie = this;
+    let current: ProvisionTrie = this;
     for (const value of provisionMap.values()) {
       const { children } = current;
       if (!(value in children)) {
-        children[value] = new Trie();
+        children[value] = new ProvisionTrie();
       }
       current = children[value];
     }
@@ -31,7 +31,10 @@ export class Trie {
    * @param current the current node during the recursion
    * @returns The Trie Node of the matching provison, or null if not found
    */
-  search(provision: string, current: Trie = this): Trie | null {
+  search(
+    provision: string,
+    current: ProvisionTrie = this
+  ): ProvisionTrie | null {
     // base cases
     const { children } = current;
     if (current.end) {
@@ -58,7 +61,7 @@ export class Trie {
    * @param current the current node during the recursion
    * @returns
    */
-  toString(current: Trie = this): string {
+  toString(current: ProvisionTrie = this): string {
     const { children } = current;
 
     const texts: string[] = [];
