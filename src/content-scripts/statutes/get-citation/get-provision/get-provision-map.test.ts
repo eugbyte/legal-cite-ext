@@ -92,4 +92,30 @@ describe("test getProvisionMap", () => {
     console.log(actual);
     expect(actual).toMatchObject(orderedMap);
   });
+
+  it("getProvisionMap should handle case of overlapping regex matches between alpha and roman numeral, e.g. '(i)', and missing TABLE tag should website change", () => {
+    // testing s 8(2)(i)
+    const element1 = document.createElement("div");
+    element1.innerText = "(i)";
+
+    const element2 = document.createElement("div");
+    element2.innerText = "(2)";
+
+    const element3 = document.createElement("div");
+    element3.innerText = "8.";
+
+    element3.appendChild(element2);
+    element2.appendChild(element1);
+
+    const orderedMap = new Map<RegExp, string>([
+      [numDot, "8."],
+      [bracketNumber, "(2)"],
+      [bracketAlpha, "(__)"],
+      [roman, "(i)"],
+    ]);
+
+    const actual = getProvisionMap(element1);
+    console.log(actual);
+    expect(actual).toMatchObject(orderedMap);
+  });
 });
