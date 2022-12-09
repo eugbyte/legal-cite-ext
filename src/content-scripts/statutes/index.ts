@@ -43,6 +43,7 @@ import { sortCursors } from "./sort-cursors";
         );
 
         const text: string = document.getSelection()?.toString() || "";
+        console.log({ selection: text });
         const htmlContent = formatHTML(text, citation);
 
         await write(htmlContent, `${text}\n${citation}`);

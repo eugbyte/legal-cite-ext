@@ -1,6 +1,26 @@
 export const numDot = /^\d+\./;
 export const bracketNumber = /^—?\(\d+\)/;
 export const bracketAlpha = /^\([A-Z]+\)/i;
+export const roman = /^\([xvi]+\)/i;
+
+/**
+ * Get an ordered map mapping the regex to matched text
+ *
+ * e.g. `{ /d+\./ : "6.", /\(-?\d+\)/ : "(1)" }` -> s 6(1)
+ * @param element The HTML target element of either the left click or right click mouse event
+ * @returns
+ */
+export function getProvisionMap(element: HTMLElement): Map<RegExp, string> {
+  // an ordered map
+  const orderedMap = new Map<RegExp, string>([
+    [numDot, ""],
+    [bracketNumber, ""],
+    [bracketAlpha, ""],
+    [roman, ""],
+  ]);
+  traverseUp(element, orderedMap);
+  return orderedMap;
+}
 
 /**
  * We use an ordered hashmap to record the provisions found as we traverse up the DOM tree recursively using element.parentElement.
@@ -30,7 +50,7 @@ function traverseUp(
   // Choose and update state
   const keys: RegExp[] = Array.from(provisionDict.keys());
 
-  for (let i = 0; i < keys.length; i++) {
+  for (let i = keys.length - 1; i >= 0; i--) {
     const regex = keys[i];
     const isFound: boolean =
       regex.test(text) && provisionDict.get(regex) === "";
@@ -47,28 +67,44 @@ function traverseUp(
         provisionDict.delete(keys[j]);
       }
     }
+
+    /**
+     * @warning  Fragile web scrapping code, may break if website changes.
+     *
+     * Fragile code workaround to handle regex overlap between bracketAlpha and roman regex, e.g. for "(i)".
+     *
+     * In the AGC website, every level of sub-provision for letters and roman numerals, are enclosed in <table>.
+     * So "(a)" is in a table, and "(ii)" is in another nested table.
+     */
+    const isRomanAlphaOverlap: boolean =
+      regex == roman && isFound && bracketAlpha.test(text);
+    let elementCopy: HTMLElement | null = element;
+    if (isRomanAlphaOverlap) {
+      while (
+        elementCopy != null &&
+        elementCopy.tagName !== "TABLE" &&
+        !numDot.test(elementCopy.innerText)
+      ) {
+        elementCopy = elementCopy.parentElement;
+      }
+
+      if (
+        elementCopy == null ||
+        numDot.test((elementCopy as HTMLElement).innerText)
+      ) {
+        console.error(
+          "TABLE tag not found or depth edited. Website changed, hence, web scrapping broke."
+        );
+        // let the user know of the error, and to edit the citation himself
+        provisionDict.set(bracketAlpha, "(__)");
+      } else {
+        element = elementCopy;
+        break;
+      }
+    }
   }
 
   // Explore
-  const next: HTMLElement | null = element.parentElement;
+  const next = element?.parentElement as HTMLElement | null;
   traverseUp(next, provisionDict);
-}
-
-/**
- * Get an ordered map mapping the regex to matched text
- *
- * e.g. `{ /d+\./ : "6.", /\(-?\d+\)/ : "(1)" }` -> s 6(1)
- *
- * @param element The HTML target element of either the left click or right click mouse event
- * @returns
- */
-export function getProvisionMap(element: HTMLElement): Map<RegExp, string> {
-  // an ordered map
-  const orderedMap = new Map<RegExp, string>([
-    [numDot, ""],
-    [bracketNumber, ""],
-    [bracketAlpha, ""],
-  ]);
-  traverseUp(element, orderedMap);
-  return orderedMap;
 }
