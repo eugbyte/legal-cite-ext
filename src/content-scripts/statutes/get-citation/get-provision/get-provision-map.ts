@@ -69,7 +69,9 @@ function traverseUp(
     }
 
     /**
-     * @warning Fragile code workaround to handle regex overlap between bracketAlpha and roman regex, e.g. for "(i)".
+     * @warning  Fragile web scrapping code, may break if website changes.
+     *
+     * Fragile code workaround to handle regex overlap between bracketAlpha and roman regex, e.g. for "(i)".
      *
      * In the AGC website, every level of sub-provision for letters and roman numerals, are enclosed in <table>.
      * So "(a)" is in a table, and "(ii)" is in another nested table.
@@ -78,18 +80,26 @@ function traverseUp(
       regex == roman && isFound && bracketAlpha.test(text);
     let elementCopy: HTMLElement | null = element;
     if (isRomanAlphaOverlap) {
-      while (elementCopy != null && elementCopy.tagName !== "TABLE") {
+      while (
+        elementCopy != null &&
+        elementCopy.tagName !== "TABLE" &&
+        !numDot.test(elementCopy.innerText)
+      ) {
         elementCopy = elementCopy.parentElement;
       }
-      if (elementCopy != null) {
-        element = elementCopy;
-        break;
-      } else {
+
+      if (
+        elementCopy == null ||
+        numDot.test((elementCopy as HTMLElement).innerText)
+      ) {
         console.error(
-          "TABLE tag not found. Website changed, hence, web scrapping broke."
+          "TABLE tag not found or depth edited. Website changed, hence, web scrapping broke."
         );
         // let the user know of the error, and to edit the citation himself
         provisionDict.set(bracketAlpha, "(__)");
+      } else {
+        element = elementCopy;
+        break;
       }
     }
   }
