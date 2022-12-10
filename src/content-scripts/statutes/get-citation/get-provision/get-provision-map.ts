@@ -2,6 +2,8 @@ export const numDot = /^\d+\./;
 export const bracketNumber = /^—?\(\d+\)/;
 export const bracketAlpha = /^\([A-Z]+\)/i;
 export const roman = /^\([xvi]+\)/i;
+export const dash_a = /—\r?\n\(a\)\t/;
+export const dash_i = /—(\r)?\n\(i\)\t/;
 
 /**
  * Get an ordered map mapping the regex to matched text
@@ -15,7 +17,9 @@ export function getProvisionMap(element: HTMLElement): Map<RegExp, string> {
   const orderedMap = new Map<RegExp, string>([
     [numDot, ""],
     [bracketNumber, ""],
+    [dash_a, ""],
     [bracketAlpha, ""],
+    [dash_i, ""],
     [roman, ""],
   ]);
   traverseUp(element, orderedMap);
@@ -58,7 +62,12 @@ function traverseUp(
       continue;
     }
 
-    const [value] = regex.exec(text) as RegExpExecArray;
+    let [value] = regex.exec(text) as RegExpExecArray;
+    value = value
+      .replaceAll(".", "")
+      .replaceAll("—", "")
+      .replaceAll(/\r|\r\n|\n|\t/gm, "")
+      .replaceAll("—", "");
     provisionDict.set(regex, value);
 
     // delete the empty trailing keys in the ordered dict
