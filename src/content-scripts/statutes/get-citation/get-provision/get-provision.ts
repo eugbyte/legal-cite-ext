@@ -7,7 +7,7 @@ import {
   numDot,
   roman,
 } from "./get-provision-map";
-import { ProvisionTrie } from "./stringify-provision-map";
+import { ProvisionTrie } from "./provision-trie";
 import cloneShallow from "lodash.clone";
 
 /**
