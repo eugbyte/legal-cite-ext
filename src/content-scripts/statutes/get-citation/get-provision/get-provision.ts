@@ -8,6 +8,7 @@ import {
   roman,
 } from "./get-provision-map";
 import { ProvisionTrie } from "./stringify-provision-map";
+import cloneShallow from "lodash.clone";
 
 /**
  * Two steps to get the provision
@@ -29,8 +30,9 @@ export const getProvision = (
     rightClick,
     new Set<RegExp>([numDot, bracketNumber, bracketAlpha, roman])
   );
-  const selectionMap: Map<RegExp, string> = getSelectionMap(
+  const selectionMap: Map<RegExp, string> = getProvisionMapOfSelection(
     document.getSelection() as Selection,
+    rightMap,
     rightClick
   );
 
@@ -48,7 +50,7 @@ export const getProvision = (
 };
 
 /**
- * @warning Fragile web scrapping code, may break if website changes, since the regex of the
+ * @warning Fragile web scrapping code, may break if website changes, due to the regex to detect the prefix sub provisions, e.g. "—(a)" and "—(i)"
  *
  * Gets an ordered map mapping the regex representing the sub-provisions to the matching text,
  * w.r.t the text selected between the left cursor and the right cursor.
@@ -56,24 +58,30 @@ export const getProvision = (
  *
  * For example, for `s 8(1)(a)-(d)`, When the user left clicks on `s 8(1)`, drags the cursors and right clicks on `s 8(1)(d)`, sub provision `(a)` is left out
  * @param selection The selection object, represents the range of text selected by the user
+ * @param rightMap The provision map from the right click HTML target
  * @param rightClick The HTML target element from the right click event
  */
-const getSelectionMap = (
+const getProvisionMapOfSelection = (
   selection: Selection,
+  rightMap: Map<RegExp, string>,
   rightClick: HTMLElement
 ): Map<RegExp, string> => {
   const selectedText = selection?.toString() || "";
 
   // There is an overlap between roman and bracket alpha, e.g. "(i)"
-  const selectionMap = getProvisionMap(rightClick, new Set<RegExp>([numDot, bracketNumber, bracketAlpha, roman]));
+  const selectionMap = cloneShallow(rightMap);
+
+  // Focus on the prefixes of the sub provision of "(a)" and "(i)"
+  const prefixMap = getProvisionMap(
+    rightClick,
+    new Set<RegExp>([numDot, bracketNumber, dash_a, dash_i])
+  );
 
   if (dash_a.test(selectedText)) {
-    const map = getProvisionMap(rightClick, new Set<RegExp>([numDot, bracketNumber, dash_a]));
-    selectionMap.set(bracketAlpha, map.get(dash_a) || "")
-  } 
+    selectionMap.set(bracketAlpha, prefixMap.get(dash_a) || "");
+  }
   if (dash_i.test(selectedText)) {
-    const map = getProvisionMap(rightClick, new Set<RegExp>([numDot, bracketNumber, dash_i]));
-    selectionMap.set(roman, map.get(dash_i) || "")
+    selectionMap.set(roman, prefixMap.get(dash_i) || "");
   }
 
   return selectionMap;
