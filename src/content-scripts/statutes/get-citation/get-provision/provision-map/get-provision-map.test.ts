@@ -1,10 +1,5 @@
-import {
-  bracketAlpha,
-  bracketNumber,
-  getProvisionMap,
-  numDot,
-  roman,
-} from "./get-provision-map";
+import { getProvisionMap } from "./get-provision-map";
+import { bracketAlpha, bracketNumber, numDot, roman } from "./regex";
 
 const regexes = new Set<RegExp>([numDot, bracketNumber, bracketAlpha, roman]);
 

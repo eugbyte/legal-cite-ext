@@ -1,10 +1,5 @@
-const numDot = /^\d+\./;
-const bracketNumber = /^—?\(\d+\)/;
-const bracketAlpha = /^\([A-Z]+\)/i;
-const roman = /^\([xvi]+\)/i;
-const dash_a = /—\r?\n\(a\)\t/;
-const dash_i = /—(\r)?\n\(i\)\t/;
-export { numDot, bracketNumber, bracketAlpha, roman, dash_a, dash_i };
+import { bracketAlpha, numDot, roman } from "./regex";
+
 /**
  * Get an ordered map mapping the regex representing the sub-provisions to matching text
  *
