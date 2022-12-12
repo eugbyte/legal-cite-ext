@@ -20,6 +20,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@types/jest": "^29.0.3",
+    "@types/lodash.clone": "^4.5.7",
     "@types/lodash.clonedeep": "^4.5.7",
     "@types/lodash.startcase": "^4.4.7",
     "@types/react": "^18.0.20",
@@ -56,6 +57,7 @@
     "webpack-dev-server": "^4.11.0"
   },
   "dependencies": {
+    "lodash.clone": "^4.5.0",
     "lodash.clonedeep": "^4.5.0",
     "lodash.startcase": "^4.4.0",
     "react": "^18.2.0",

@@ -1,5 +1,5 @@
 import { numDot, bracketNumber, bracketAlpha } from "./get-provision-map";
-import { ProvisionTrie } from "./stringify-provision-map";
+import { ProvisionTrie } from "./provision-trie";
 
 describe("test ProvisionGraph", () => {
   it("ProvisionGraph should return provision of s 8(2)(a)", () => {
