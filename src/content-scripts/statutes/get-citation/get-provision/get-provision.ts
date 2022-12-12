@@ -52,8 +52,7 @@ export const getProvision = (
 /**
  * @warning Fragile web scrapping code, may break if website changes, due to the regex to detect the prefix sub provisions, e.g. `—\n(a)` and `—\n(i)`
  *
- * Gets an ordered map mapping the regex representing the prefix sub-provisions, e.g. (a) and (i),
- * w.r.t the text selected between the left cursor and the right cursor.
+ * Gets an ordered map mapping the regex representing the prefix sub-provisions, e.g. (a) and (i), * w.r.t the text selected between the left cursor and the right cursor.
  *
  * For example, for `s 8(1)(a)-(d)`, When the user left clicks on `s 8(1)`, drags the cursors and right clicks on `s 8(1)(d)`, sub provision `(a)` is left out
  * @param selection The selection object, represents the range of text selected by the user
