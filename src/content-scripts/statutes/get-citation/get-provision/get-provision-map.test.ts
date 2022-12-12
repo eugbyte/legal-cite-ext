@@ -27,7 +27,7 @@ describe("test getProvisionMap", () => {
     element3.appendChild(element1);
 
     const orderedMap = new Map<RegExp, string>([
-      [numDot, "8."],
+      [numDot, "8"],
       [bracketNumber, "(2)"],
       [bracketAlpha, "(a)"],
     ]);
@@ -57,7 +57,7 @@ describe("test getProvisionMap", () => {
     table.appendChild(element1);
 
     const orderedMap = new Map<RegExp, string>([
-      [numDot, "8."],
+      [numDot, "8"],
       [bracketNumber, "(2)"],
       [bracketAlpha, "(a)"],
       [roman, "(i)"],
@@ -85,7 +85,7 @@ describe("test getProvisionMap", () => {
     table.appendChild(element1);
 
     const orderedMap = new Map<RegExp, string>([
-      [numDot, "8."],
+      [numDot, "8"],
       [bracketNumber, "(2)"],
       [roman, "(i)"],
     ]);
@@ -110,7 +110,7 @@ describe("test getProvisionMap", () => {
     element2.appendChild(element1);
 
     const orderedMap = new Map<RegExp, string>([
-      [numDot, "8."],
+      [numDot, "8"],
       [bracketNumber, "(2)"],
       [bracketAlpha, "(__)"],
       [roman, "(i)"],

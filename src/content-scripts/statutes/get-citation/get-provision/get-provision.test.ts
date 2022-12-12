@@ -15,6 +15,6 @@ describe("test getProvision", () => {
     element3.appendChild(element2);
 
     const provision: string = getProvision(element1, element2);
-    expect(provision).toBe("s 6(d)-(f)");
+    expect(provision).toBe("6(d)-(f)");
   });
 });
