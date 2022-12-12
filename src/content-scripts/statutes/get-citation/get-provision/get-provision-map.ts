@@ -77,11 +77,11 @@ function traverseUp(
     provisionDict.set(regex, value);
 
     // delete the empty trailing keys in the ordered dict
-    // for (let j = i; j < keys.length; j++) {
-    //   if (provisionDict.get(keys[j]) === "") {
-    //     provisionDict.delete(keys[j]);
-    //   }
-    // }
+    for (let j = i; j < keys.length; j++) {
+      if (provisionDict.get(keys[j]) === "") {
+        provisionDict.delete(keys[j]);
+      }
+    }
 
     /**
      * @warning Fragile web scrapping code, may break if website changes.
