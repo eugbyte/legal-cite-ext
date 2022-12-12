@@ -6,6 +6,8 @@ import {
   roman,
 } from "./get-provision-map";
 
+const regexes = new Set<RegExp>([numDot, bracketNumber, bracketAlpha, roman]);
+
 describe("test getProvisionMap", () => {
   it("getProvisionMap should return provision of s 8(2)(a)", () => {
     const element1 = document.createElement("div");
@@ -30,7 +32,7 @@ describe("test getProvisionMap", () => {
       [bracketAlpha, "(a)"],
     ]);
 
-    const actual = getProvisionMap(element1);
+    const actual = getProvisionMap(element1, regexes);
     expect(actual).toMatchObject(orderedMap);
   });
 
@@ -61,7 +63,7 @@ describe("test getProvisionMap", () => {
       [roman, "(i)"],
     ]);
 
-    const actual = getProvisionMap(element1);
+    const actual = getProvisionMap(element1, regexes);
     expect(actual).toMatchObject(orderedMap);
   });
 
@@ -88,7 +90,7 @@ describe("test getProvisionMap", () => {
       [roman, "(i)"],
     ]);
 
-    const actual = getProvisionMap(element1);
+    const actual = getProvisionMap(element1, regexes);
     console.log(actual);
     expect(actual).toMatchObject(orderedMap);
   });
@@ -114,7 +116,7 @@ describe("test getProvisionMap", () => {
       [roman, "(i)"],
     ]);
 
-    const actual = getProvisionMap(element1);
+    const actual = getProvisionMap(element1, regexes);
     console.log(actual);
     expect(actual).toMatchObject(orderedMap);
   });

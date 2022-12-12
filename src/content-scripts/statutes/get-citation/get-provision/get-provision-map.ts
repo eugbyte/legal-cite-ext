@@ -1,28 +1,34 @@
-export const numDot = /^\d+\./;
-export const bracketNumber = /^—?\(\d+\)/;
-export const bracketAlpha = /^\([A-Z]+\)/i;
-export const roman = /^\([xvi]+\)/i;
-export const dash_a = /—\r?\n\(a\)\t/;
-export const dash_i = /—(\r)?\n\(i\)\t/;
-
+const numDot = /^\d+\./;
+const bracketNumber = /^—?\(\d+\)/;
+const bracketAlpha = /^\([A-Z]+\)/i;
+const roman = /^\([xvi]+\)/i;
+const dash_a = /—\r?\n\(a\)\t/;
+const dash_i = /—(\r)?\n\(i\)\t/;
+export { numDot, bracketNumber, bracketAlpha, roman, dash_a, dash_i };
 /**
- * Get an ordered map mapping the regex to matched text
+ * Get an ordered map mapping the regex representing the sub-provisions to matching text
  *
  * e.g. `{ /d+\./ : "6.", /\(-?\d+\)/ : "(1)" }` -> s 6(1)
  * @param element The HTML target element of either the left click or right click mouse event
- * @returns
+ * @param regexes An ordered list of unique regular expressions representing the sub provisions, e.g. `/\(-?\d+\)/ -> "(1)"`
+ * @returns Returns an ordered map of regex representing the sub-provisionsof regex against the matches found.
+ * If the match is not found, the regex is deleted from the ordered map.
  */
-export function getProvisionMap(element: HTMLElement): Map<RegExp, string> {
+export function getProvisionMap(
+  element: HTMLElement,
+  regexes: Set<RegExp>
+): Map<RegExp, string> {
   // an ordered map
-  const orderedMap = new Map<RegExp, string>([
-    [numDot, ""],
-    [bracketNumber, ""],
-    [dash_a, ""],
-    [bracketAlpha, ""],
-    [dash_i, ""],
-    [roman, ""],
-  ]);
+  const orderedMap = new Map<RegExp, string>();
+  for (const regex of regexes) {
+    orderedMap.set(regex, "");
+  }
   traverseUp(element, orderedMap);
+  for (const [key, value] of orderedMap.entries()) {
+    if (value == "") {
+      orderedMap.delete(key);
+    }
+  }
   return orderedMap;
 }
 
@@ -71,14 +77,14 @@ function traverseUp(
     provisionDict.set(regex, value);
 
     // delete the empty trailing keys in the ordered dict
-    for (let j = i; j < keys.length; j++) {
-      if (provisionDict.get(keys[j]) === "") {
-        provisionDict.delete(keys[j]);
-      }
-    }
+    // for (let j = i; j < keys.length; j++) {
+    //   if (provisionDict.get(keys[j]) === "") {
+    //     provisionDict.delete(keys[j]);
+    //   }
+    // }
 
     /**
-     * @warning  Fragile web scrapping code, may break if website changes.
+     * @warning Fragile web scrapping code, may break if website changes.
      *
      * Fragile code workaround to handle regex overlap between bracketAlpha and roman regex, e.g. for "(i)".
      *
