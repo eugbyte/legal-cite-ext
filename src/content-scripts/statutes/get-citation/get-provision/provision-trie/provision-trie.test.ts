@@ -1,4 +1,4 @@
-import { numDot, bracketNumber, bracketAlpha } from "./get-provision-map";
+import { numDot, bracketNumber, bracketAlpha } from "../provision-map";
 import { ProvisionTrie } from "./provision-trie";
 
 describe("test ProvisionGraph", () => {

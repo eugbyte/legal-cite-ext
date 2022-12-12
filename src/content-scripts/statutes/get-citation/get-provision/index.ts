@@ -1,2 +1,2 @@
 export { getProvision } from "./get-provision";
-export { bracketAlpha } from "./get-provision-map";
+export { bracketAlpha } from "./provision-map";
