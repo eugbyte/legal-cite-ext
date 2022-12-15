@@ -8,6 +8,7 @@
 export class ProvisionTrie {
   end = false;
   children: Record<string, ProvisionTrie> = {};
+  readonly seperator = "_";
 
   /**
    * Build the Trie, e.g. 6 -> a -> [(i),(ii)], so that we can do a dfs later to stringify the Trie.
@@ -58,19 +59,61 @@ export class ProvisionTrie {
    * DFS through the graph to stringify all the children nodes, to form the provision text.
    *
    * E.g. `{ 6. -> (1) -> [(a), (b)] }` becomes s 6(1)(a)-(b).
-   * @param current the current node during the recursion
-   * @returns
+   * @returns The provison text
    */
-  toString(current: ProvisionTrie = this): string {
-    const { children } = current;
+  toString(): string {
+    const current: ProvisionTrie = this;
 
-    const texts: string[] = [];
-    for (const provision in children) {
-      const text = provision + this.toString(children[provision]);
-      texts.push(text);
+    let [leftResult, rightResult] = ["", ""];
+    const left: string[] = this.toStringLeft(current)
+      .split("_")
+      .filter((text) => text !== "");
+    const right: string[] = this.toStringRight(current)
+      .split("_")
+      .filter((text) => text !== "");
+
+    // Ignore the common parent in the trie, instead preferring the leftResult if such common parent if found
+    const len = Math.min(left.length, right.length);
+    let i = 0;
+    while (i < len) {
+      leftResult += left[i];
+      if (left[i] != right[i]) {
+        rightResult += right[i];
+        i += 1;
+        break;
+      }
+      i += 1;
     }
 
-    // the texts[] will have maximum of length 2, as for each left and right cursor target element, we collect only the first regex match
-    return texts.join("-");
+    if (i < left.length) {
+      leftResult += left.slice(i).join("");
+    }
+    if (i < right.length) {
+      rightResult += right.slice(i).join("");
+    }
+    return [leftResult, rightResult].filter((text) => text !== "").join("-");
+  }
+
+  // the texts[] will have maximum of length 2, as for each left and right cursor target element, we collect only the first regex match
+  private toStringLeft(current: ProvisionTrie = this): string {
+    const { children, seperator } = current;
+    const pairs: [string, ProvisionTrie][] = Object.entries(children);
+    if (pairs.length === 0) {
+      return "";
+    }
+
+    const [firstKey, firstValue] = pairs[0];
+    return `${firstKey}${seperator}` + this.toStringLeft(firstValue);
+  }
+
+  private toStringRight(current: ProvisionTrie = this): string {
+    const { children, seperator } = current;
+    const pairs: [string, ProvisionTrie][] = Object.entries(children);
+    if (pairs.length === 0) {
+      return "";
+    }
+
+    const [lastKey, lastValue] = pairs[pairs.length - 1];
+    return `${lastKey}${seperator}` + this.toStringRight(lastValue);
   }
 }

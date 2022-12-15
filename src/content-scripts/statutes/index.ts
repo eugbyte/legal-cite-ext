@@ -47,7 +47,7 @@ import { sortCursors } from "./sort-cursors";
 
         await write(htmlContent, `${text}\n${citation}`);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
   });

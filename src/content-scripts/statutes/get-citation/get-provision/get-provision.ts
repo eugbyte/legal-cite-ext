@@ -44,7 +44,7 @@ export const getProvision = (
   trie.add(rightMap);
 
   const provisionText = trie.toString();
-  console.log({ trieText: provisionText });
+  console.log({ provisionText });
 
   return provisionText;
 };
@@ -54,7 +54,7 @@ export const getProvision = (
  *
  * For example, for `s 8(1)(a)-(d)`, When the user left clicks on `s 8(1)`, drags the cursors and right clicks on `s 8(1)(d)`, sub provision `(a)` is left out.
  *
- * @warn Note that this function is just a brief estimate. It falses adds "(a)" for cases like `s 8(3)(a)` - `s 9(1)` -> `"s 9(1)(a)"`
+ * @warn This code is fragile due to dependency on the regex dash_a and dash_b. If the text changes, this code will not work
  * @param selection The selection object, represents the range of text selected by the user
  * @param rightClick The HTML target element from the right click event
  * @param rightMap The fully formed provision map from the right click HTML target. This rightMap will be cloned, without affecting the original.
@@ -68,6 +68,7 @@ const getProvisionMapFromSelection = (
   const selectedText = selection?.toString() || "";
 
   // Use shallow copy instead of deep copy as the keys are regex objects.
+  // Need this shallow copy, for cases like s 6(b), since "(b)" does not match dash_a
   const selectionMap = cloneShallow(rightMap);
 
   // Focus on the prefixes of the sub provision of "(a)" and "(i)"
