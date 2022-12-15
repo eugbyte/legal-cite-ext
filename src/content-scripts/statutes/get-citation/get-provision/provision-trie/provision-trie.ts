@@ -72,8 +72,6 @@ export class ProvisionTrie {
       .split("_")
       .filter((text) => text !== "");
 
-    console.log({ left, right });
-
     // Ignore the common parent in the trie, instead preferring the leftResult if such common parent if found
     const len = Math.min(left.length, right.length);
     let i = 0;
@@ -93,8 +91,7 @@ export class ProvisionTrie {
     if (i < right.length) {
       rightResult += right.slice(i).join("");
     }
-
-    return `${leftResult}-${rightResult}`;
+    return [leftResult, rightResult].filter((text) => text !== "").join("-");
   }
 
   // the texts[] will have maximum of length 2, as for each left and right cursor target element, we collect only the first regex match

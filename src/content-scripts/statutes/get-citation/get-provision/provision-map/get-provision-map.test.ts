@@ -86,7 +86,6 @@ describe("test getProvisionMap", () => {
     ]);
 
     const actual = getProvisionMap(element1, regexes);
-    console.log(actual);
     expect(actual).toMatchObject(orderedMap);
   });
 
@@ -112,7 +111,6 @@ describe("test getProvisionMap", () => {
     ]);
 
     const actual = getProvisionMap(element1, regexes);
-    console.log(actual);
     expect(actual).toMatchObject(orderedMap);
   });
 });

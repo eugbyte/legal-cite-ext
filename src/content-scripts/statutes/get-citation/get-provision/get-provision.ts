@@ -44,7 +44,7 @@ export const getProvision = (
   trie.add(rightMap);
 
   const provisionText = trie.toString();
-  console.log({ trieText: provisionText });
+  console.log({ provisionText });
 
   return provisionText;
 };
@@ -68,6 +68,7 @@ const getProvisionMapFromSelection = (
   const selectedText = selection?.toString() || "";
 
   // Use shallow copy instead of deep copy as the keys are regex objects.
+  // Need this shallow copy, for cases like s 6(b), since "(b)" does not match dash_a
   const selectionMap = cloneShallow(rightMap);
 
   // Focus on the prefixes of the sub provision of "(a)" and "(i)"
@@ -75,7 +76,6 @@ const getProvisionMapFromSelection = (
     rightClick,
     new Set<RegExp>([numDot, bracketNumber, dash_a, dash_i])
   );
-  console.log({ prefixMap });
 
   if (dash_a.test(selectedText)) {
     selectionMap.set(bracketAlpha, prefixMap.get(dash_a) || "");
