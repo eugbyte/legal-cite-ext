@@ -76,6 +76,7 @@ const getProvisionMapFromSelection = (
     rightClick,
     new Set<RegExp>([numDot, bracketNumber, dash_a, dash_i])
   );
+  console.log({ prefixMap });
 
   if (dash_a.test(selectedText)) {
     selectionMap.set(bracketAlpha, prefixMap.get(dash_a) || "");

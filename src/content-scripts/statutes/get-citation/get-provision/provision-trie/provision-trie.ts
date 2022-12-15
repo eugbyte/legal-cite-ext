@@ -74,23 +74,36 @@ export class ProvisionTrie {
     return texts.join("-");
   }
 
-  toString2(current: ProvisionTrie = this): string {
+  toString2(): string {
+    const current: ProvisionTrie = this;
+
+    const texts: string[] = [];
+    texts.push(this.toStringLeft(current));
+    texts.push(this.toStringRight(current));
+
+    return texts.join("-");
+  }
+
+  // the texts[] will have maximum of length 2, as for each left and right cursor target element, we collect only the first regex match
+  toStringLeft(current: ProvisionTrie = this): string {
     const { children } = current;
     const pairs: [string, ProvisionTrie][] = Object.entries(children);
     if (pairs.length === 0) {
       return "";
     }
-    const count = pairs.length;
-    const texts: string[] = [];
 
     const [firstKey, firstValue] = pairs[0];
-    texts.push(`${firstKey}` + this.toString2(firstValue));
-    if (count >= 2) {
-      const [lastKey, lastValue] = pairs[count - 1];
-      texts.push(`${lastKey}` + this.toString2(lastValue));
+    return `${firstKey}` + this.toStringLeft(firstValue);
+  }
 
+  toStringRight(current: ProvisionTrie = this): string {
+    const { children } = current;
+    const pairs: [string, ProvisionTrie][] = Object.entries(children);
+    if (pairs.length === 0) {
+      return "";
     }
-    // the texts[] will have maximum of length 2, as for each left and right cursor target element, we collect only the first regex match
-    return texts.join("-");
+
+    const [lastKey, lastValue] = pairs[pairs.length - 1];
+    return `${lastKey}` + this.toStringRight(lastValue);
   }
 }
