@@ -45,6 +45,7 @@ export const getProvision = (
 
   const provisionText = trie.toString();
   console.log({ trieText: provisionText });
+  console.log({ toString2: trie.toString2() });
 
   return provisionText;
 };
