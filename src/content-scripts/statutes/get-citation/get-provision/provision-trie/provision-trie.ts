@@ -41,10 +41,8 @@ export class ProvisionTrie {
   toString(options: Options = { shouldItalicise: false }): string {
     const current: ProvisionTrie = this;
 
-    const left: string[] = this.rightView(current).filter(
-      (text) => text !== ""
-    );
-    const right: string[] = this.leftView(current).filter(
+    const left: string[] = this.leftView(current).filter((text) => text !== "");
+    const right: string[] = this.rightView(current).filter(
       (text) => text !== ""
     );
 
@@ -65,22 +63,6 @@ export class ProvisionTrie {
    * @param current The current trie in the recursive call
    * @returns an array of provisions
    */
-  private rightView(current: ProvisionTrie = this): string[] {
-    const { children } = current;
-    const pairs: [string, ProvisionTrie][] = Object.entries(children);
-    if (pairs.length === 0) {
-      return [];
-    }
-
-    const [firstKey, firstValue] = pairs[0];
-    return [firstKey, ...this.rightView(firstValue)];
-  }
-
-  /**
-   * Provide the right side view of the trie - the right most nodes for every level.
-   * @param current The current trie in the recursive call
-   * @returns an array of provisions
-   */
   private leftView(current: ProvisionTrie = this): string[] {
     const { children } = current;
     const pairs: [string, ProvisionTrie][] = Object.entries(children);
@@ -88,8 +70,24 @@ export class ProvisionTrie {
       return [];
     }
 
+    const [firstKey, firstValue] = pairs[0];
+    return [firstKey, ...this.leftView(firstValue)];
+  }
+
+  /**
+   * Provide the right side view of the trie - the right most nodes for every level.
+   * @param current The current trie in the recursive call
+   * @returns an array of provisions
+   */
+  private rightView(current: ProvisionTrie = this): string[] {
+    const { children } = current;
+    const pairs: [string, ProvisionTrie][] = Object.entries(children);
+    if (pairs.length === 0) {
+      return [];
+    }
+
     const [lastKey, lastValue] = pairs[pairs.length - 1];
-    return [lastKey, ...this.leftView(lastValue)];
+    return [lastKey, ...this.rightView(lastValue)];
   }
 
   /**
