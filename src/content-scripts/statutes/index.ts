@@ -50,15 +50,15 @@ import { sortCursors } from "./sort-cursors";
           leftCursor.target as HTMLElement,
           rightCursor.target as HTMLElement
         );
-        console.log({provision: trie.toString()});
+        console.log({ provision: trie.toString() });
 
         let textContent = `${text}\n`;
-        textContent += `{${chapter} (${revEdYear}) s ${trie.toString()}`;
+        textContent += `${chapter} (${revEdYear}) s ${trie.toString()}`;
 
         let htmlContent = `${createParas(text)}\n`;
-        htmlContent += `{${chapter} (${revEdYear}) s ${trie.toString(
-          true
-        )}`;
+        htmlContent += `${chapter} (${revEdYear}) s ${trie.toString({
+          shouldItalicise: true,
+        })}`;
 
         await write(htmlContent, textContent);
       } catch (error) {
