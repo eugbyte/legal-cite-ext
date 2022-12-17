@@ -1,7 +1,6 @@
 import { browser } from "webextension-polyfill-ts";
 import { Action } from "~/models/Action";
-import { write } from "./clipboard";
-import { createParas } from "./format-html";
+import { createParas, write } from "./clipboard";
 import {
   getChapter,
   getRevEdYear,
