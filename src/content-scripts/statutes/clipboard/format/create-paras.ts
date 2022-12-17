@@ -6,6 +6,10 @@
  * @param selection the selected text from `document.getSelection().toString()`
  * @returns an array of paragraphs
  */
-export const createParas = (selection: string): string[] => {
-  return selection.split("\n").map((text) => `<p>${text}</p>`);
+export const createParas = (selection: string): string => {
+  return selection
+    .split("\n")
+    .map((text) => `<p>${text}</p>`)
+    .join("")
+    .replaceAll("\r", "");
 };

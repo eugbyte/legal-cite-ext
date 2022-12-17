@@ -1,8 +1,12 @@
 import { browser } from "webextension-polyfill-ts";
 import { Action } from "~/models/Action";
-import { write } from "./clipboard";
-import { formatHTML } from "./format-html";
-import { getCitation } from "./get-citation";
+import { createParas, write } from "./clipboard";
+import {
+  getChapter,
+  getRevEdYear,
+  getProvision,
+  ProvisionTrie,
+} from "./get-citation";
 import { sortCursors } from "./sort-cursors";
 
 /**
@@ -37,15 +41,25 @@ import { sortCursors } from "./sort-cursors";
     ) {
       try {
         [leftCursor, rightCursor] = sortCursors(leftCursor, rightCursor);
-        const citation: string = getCitation(
+
+        const text: string = document.getSelection()?.toString() || "";
+        const chapter: string = getChapter(); // Personal Data Protection Act 2012
+        const revEdYear = getRevEdYear(); // 2020 Rev Ed
+        const trie: ProvisionTrie = getProvision(
           leftCursor.target as HTMLElement,
           rightCursor.target as HTMLElement
         );
+        console.log({ provision: trie.toString() });
 
-        const text: string = document.getSelection()?.toString() || "";
-        const htmlContent = formatHTML(text, citation);
+        let textContent = `${text}\n`;
+        textContent += `${chapter} (${revEdYear}) s ${trie.toString()}`;
 
-        await write(htmlContent, `${text}\n${citation}`);
+        let htmlContent = `${createParas(text)}\n`;
+        htmlContent += `${chapter} (${revEdYear}) s ${trie.toString({
+          shouldItalicise: true,
+        })}`;
+
+        await write(htmlContent, textContent);
       } catch (error) {
         console.error(error);
       }
