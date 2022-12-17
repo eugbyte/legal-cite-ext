@@ -8,7 +8,6 @@
 export class ProvisionTrie {
   end = false;
   children: Record<string, ProvisionTrie> = {};
-  readonly seperator = "_";
 
   /**
    * Build the Trie, e.g. 6 -> a -> [(i),(ii)], so that we can do a dfs later to stringify the Trie.
@@ -57,20 +56,31 @@ export class ProvisionTrie {
 
   /**
    * DFS through the graph to stringify all the children nodes, to form the provision text.
+   * Bracketed alpahas, e.g. `"(a)"` are surrounded by i italic tags - `<i>(a)</i>`.
    *
    * E.g. `{ 6. -> (1) -> [(a), (b)] }` becomes s 6(1)(a)-(b).
+   * @param shouldItalicise whether Bracketed alpahas e.g. `"(a)"` should be surrounded with `<i>` tags. Defaults to false.
+   *
    * @returns The provison text
    */
-  toString(): string {
+  toString(shouldItalicise = false): string {
     const current: ProvisionTrie = this;
 
     let [leftResult, rightResult] = ["", ""];
-    const left: string[] = this.toStringLeft(current)
-      .split("_")
-      .filter((text) => text !== "");
-    const right: string[] = this.toStringRight(current)
-      .split("_")
-      .filter((text) => text !== "");
+    const left: string[] = this.toStringLeft(current).filter(
+      (text) => text !== ""
+    );
+    const right: string[] = this.toStringRight(current).filter(
+      (text) => text !== ""
+    );
+
+    // To italicse the sub provisions, e.g. `(a)`, which is the third index of ["7", "(1)", "(a)"]
+    if (shouldItalicise && left.length >= 2) {
+      left[2] = `<i>${left[2]}</i>`;
+    }
+    if (shouldItalicise && right.length >= 2) {
+      right[2] = `<i>${right[2]}</i>`;
+    }
 
     // Ignore the common parent in the trie, instead preferring the leftResult if such common parent if found
     const len = Math.min(left.length, right.length);
@@ -91,29 +101,32 @@ export class ProvisionTrie {
     if (i < right.length) {
       rightResult += right.slice(i).join("");
     }
-    return [leftResult, rightResult].filter((text) => text !== "").join("-");
+    return [leftResult, rightResult]
+      .filter((text) => text !== "")
+      .join("-")
+      .replace(/\n+/g, "");
   }
 
   // the texts[] will have maximum of length 2, as for each left and right cursor target element, we collect only the first regex match
-  private toStringLeft(current: ProvisionTrie = this): string {
-    const { children, seperator } = current;
+  private toStringLeft(current: ProvisionTrie = this): string[] {
+    const { children } = current;
     const pairs: [string, ProvisionTrie][] = Object.entries(children);
     if (pairs.length === 0) {
-      return "";
+      return [];
     }
 
     const [firstKey, firstValue] = pairs[0];
-    return `${firstKey}${seperator}` + this.toStringLeft(firstValue);
+    return [firstKey, ...this.toStringLeft(firstValue)];
   }
 
-  private toStringRight(current: ProvisionTrie = this): string {
-    const { children, seperator } = current;
+  private toStringRight(current: ProvisionTrie = this): string[] {
+    const { children } = current;
     const pairs: [string, ProvisionTrie][] = Object.entries(children);
     if (pairs.length === 0) {
-      return "";
+      return [];
     }
 
     const [lastKey, lastValue] = pairs[pairs.length - 1];
-    return `${lastKey}${seperator}` + this.toStringRight(lastValue);
+    return [lastKey, ...this.toStringRight(lastValue)];
   }
 }

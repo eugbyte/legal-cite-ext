@@ -21,7 +21,7 @@ import cloneShallow from "lodash.clone";
 export const getProvision = (
   leftClick: HTMLElement,
   rightClick: HTMLElement
-): string => {
+): ProvisionTrie => {
   const leftMap: Map<RegExp, string> = getProvisionMap(
     leftClick,
     new Set<RegExp>([numDot, bracketNumber, bracketAlpha, roman])
@@ -43,10 +43,7 @@ export const getProvision = (
   trie.add(selectionMap);
   trie.add(rightMap);
 
-  const provisionText = trie.toString();
-  console.log({ provisionText });
-
-  return provisionText;
+  return trie;
 };
 
 /**
@@ -54,7 +51,6 @@ export const getProvision = (
  *
  * For example, for `s 8(1)(a)-(d)`, When the user left clicks on `s 8(1)`, drags the cursors and right clicks on `s 8(1)(d)`, sub provision `(a)` is left out.
  *
- * @warn This code is fragile due to dependency on the regex dash_a and dash_b. If the text changes, this code will not work
  * @param selection The selection object, represents the range of text selected by the user
  * @param rightClick The HTML target element from the right click event
  * @param rightMap The fully formed provision map from the right click HTML target. This rightMap will be cloned, without affecting the original.

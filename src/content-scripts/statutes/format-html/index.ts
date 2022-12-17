@@ -1,1 +1,1 @@
-export { formatHTML } from "./format-html";
+export { createParas } from "./create-paras";
