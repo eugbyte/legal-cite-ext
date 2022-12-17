@@ -30,35 +30,6 @@ export class ProvisionTrie {
   }
 
   /**
-   * Searches for the Trie node matching the text
-   * @param provision
-   * @param current the current node during the recursion
-   * @returns The Trie Node of the matching provison, or null if not found
-   */
-  getTrieNode(
-    provision: string,
-    current: ProvisionTrie = this
-  ): ProvisionTrie | null {
-    // base cases
-    const { children } = current;
-    if (current.end) {
-      return null;
-    }
-    if (provision in children) {
-      return children[provision];
-    }
-
-    for (const provision in children) {
-      const res = this.getTrieNode(provision, children[provision]);
-      if (res != null) {
-        return res;
-      }
-    }
-
-    return null;
-  }
-
-  /**
    * DFS through the graph to stringify all the children nodes, to form the provision text.
    * Bracketed alpahas, e.g. `"(a)"` are surrounded by i italic tags - `<i>(a)</i>`.
    *
