@@ -41,10 +41,10 @@ export class ProvisionTrie {
   toString(options: Options = { shouldItalicise: false }): string {
     const current: ProvisionTrie = this;
 
-    const left: string[] = this.toStringLeft(current).filter(
+    const left: string[] = this.rightView(current).filter(
       (text) => text !== ""
     );
-    const right: string[] = this.toStringRight(current).filter(
+    const right: string[] = this.leftView(current).filter(
       (text) => text !== ""
     );
 
@@ -65,7 +65,7 @@ export class ProvisionTrie {
    * @param current The current trie in the recursive call
    * @returns an array of provisions
    */
-  private toStringLeft(current: ProvisionTrie = this): string[] {
+  private rightView(current: ProvisionTrie = this): string[] {
     const { children } = current;
     const pairs: [string, ProvisionTrie][] = Object.entries(children);
     if (pairs.length === 0) {
@@ -73,7 +73,7 @@ export class ProvisionTrie {
     }
 
     const [firstKey, firstValue] = pairs[0];
-    return [firstKey, ...this.toStringLeft(firstValue)];
+    return [firstKey, ...this.rightView(firstValue)];
   }
 
   /**
@@ -81,7 +81,7 @@ export class ProvisionTrie {
    * @param current The current trie in the recursive call
    * @returns an array of provisions
    */
-  private toStringRight(current: ProvisionTrie = this): string[] {
+  private leftView(current: ProvisionTrie = this): string[] {
     const { children } = current;
     const pairs: [string, ProvisionTrie][] = Object.entries(children);
     if (pairs.length === 0) {
@@ -89,7 +89,7 @@ export class ProvisionTrie {
     }
 
     const [lastKey, lastValue] = pairs[pairs.length - 1];
-    return [lastKey, ...this.toStringRight(lastValue)];
+    return [lastKey, ...this.leftView(lastValue)];
   }
 
   /**
