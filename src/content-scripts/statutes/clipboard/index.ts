@@ -1,2 +1,2 @@
 export { write } from "./write";
-export { createParas } from "./format/create-paras";
+export { createParas } from "./format";
