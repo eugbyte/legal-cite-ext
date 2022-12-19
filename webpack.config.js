@@ -53,7 +53,7 @@ module.exports = {
       },
     ],
   },
-  devtool: prod ? undefined : "source-map",
+  devtool: prod ? false : "source-map",
   plugins: [
     new MiniCssExtractPlugin({
       filename: "[name].css",
