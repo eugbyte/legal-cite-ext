@@ -18,10 +18,12 @@ import { sortCursors } from "./sort-cursors";
 
 // IIFE
 (async () => {
+  console.log("in content script");
   let leftCursor: MouseEvent | null = null;
   let rightCursor: MouseEvent | null = null;
 
   document.addEventListener("mousedown", (event) => {
+    console.log("clicked");
     const LEFT_CLICK = 0;
     if (event.button === LEFT_CLICK) {
       leftCursor = event;

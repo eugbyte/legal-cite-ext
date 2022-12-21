@@ -8,8 +8,9 @@
     "test": "jest",
     "lint": "eslint .  --ext .js,.ts,.tsx .eslintrc.js",
     "lint:fix": "eslint . --ext .js,.ts,.tsx --fix .eslintrc.js",
-    "start:firefox": "web-ext --verbose --source-dir build run -t firefox-desktop",
-    "start:chrome": "web-ext --source-dir build run  -t chromium"
+    "lint:webext": "web-ext --source-dir dist lint",
+    "start:firefox": "web-ext --verbose --source-dir dist run --target=firefox-desktop --firefox-preview",
+    "start:chrome": "web-ext --verbose --source-dir dist run --target chromium"
   },
   "author": "",
   "license": "ISC",

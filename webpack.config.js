@@ -19,7 +19,7 @@ module.exports = {
     "content-scripts/statutes/index": "./src/content-scripts/statutes/index.ts",
   },
   output: {
-    path: __dirname + "/build/",
+    path: __dirname + "/dist/",
   },
   resolve: {
     alias: {
@@ -54,6 +54,8 @@ module.exports = {
     ],
   },
   devtool: prod ? false : "source-map",
+  target: "web",
+  node: false,
   plugins: [
     new MiniCssExtractPlugin({
       filename: "[name].css",
