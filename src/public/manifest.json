@@ -22,7 +22,8 @@
     }
   ],
   "background": {
-    "scripts": [ "browser-polyfill.js", "background-scripts/index.js"]
+    "service_worker": "background-scripts/index.js",
+    "type": "module"
   },
   "permissions": [
     "notifications",

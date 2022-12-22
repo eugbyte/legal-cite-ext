@@ -42,6 +42,7 @@ import { sortCursors } from "./sort-cursors";
       action.type === "copy-with-source"
     ) {
       try {
+        console.log("context menu action recived from background script");
         [leftCursor, rightCursor] = sortCursors(leftCursor, rightCursor);
 
         const text: string = document.getSelection()?.toString() || "";
