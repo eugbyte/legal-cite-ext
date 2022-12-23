@@ -4,9 +4,19 @@
  Currently supported websites are:
  1. https://sso.agc.gov.sg 
 
-# How to develop
+# To develop and run
 ```
 npm i
 npm run build
-npm run start:chrome // or, npm run start:firefox
+```
+
+To run the web extension in the firefox / chrome browser
+```
+npm run start:firefox
+npm run start:chrome
+```
+
+# To test
+```
+npm run test
 ```
