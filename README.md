@@ -2,7 +2,7 @@
  Web extension to auto generate citation when copying from legal sources.
 
  Currently supported websites are:
- 1. https://sso.agc.gov.sg 
+ 1. https://sso.agc.gov.sg/Act/**
 
 # To develop and run
 ```

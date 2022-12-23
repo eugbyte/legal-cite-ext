@@ -49,10 +49,10 @@ export class ProvisionTrie {
     // To italicse the sub provisions, e.g. `(a)`, which is index 2 of ["7", "(1)", "(a)"]
     const { shouldItalicise } = options;
     const italIndex = 2;
-    if (shouldItalicise && left.length >= 2) {
+    if (shouldItalicise && left.length >= italIndex + 1) {
       left[italIndex] = this.italiciseProvision(left[italIndex]);
     }
-    if (shouldItalicise && right.length >= 2) {
+    if (shouldItalicise && right.length >= italIndex + 1) {
       right[italIndex] = this.italiciseProvision(right[italIndex]);
     }
     return this.combineViews(left, right);
