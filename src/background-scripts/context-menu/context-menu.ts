@@ -28,7 +28,6 @@ export const handleRightClick = (
 ) => {
   switch (menuItemId) {
     case options.id:
-      console.log("right clicked");
       browser.tabs.sendMessage(
         tabId,
         new Action(options.id, "copy-with-source")

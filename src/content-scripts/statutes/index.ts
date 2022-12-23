@@ -18,12 +18,10 @@ import { sortCursors } from "./sort-cursors";
 
 // IIFE
 (async () => {
-  console.log("in content script");
   let leftCursor: MouseEvent | null = null;
   let rightCursor: MouseEvent | null = null;
 
   document.addEventListener("mousedown", (event) => {
-    console.log("clicked");
     const LEFT_CLICK = 0;
     if (event.button === LEFT_CLICK) {
       leftCursor = event;
@@ -42,7 +40,6 @@ import { sortCursors } from "./sort-cursors";
       action.type === "copy-with-source"
     ) {
       try {
-        console.log("context menu action recived from background script");
         [leftCursor, rightCursor] = sortCursors(leftCursor, rightCursor);
 
         const text: string = document.getSelection()?.toString() || "";
