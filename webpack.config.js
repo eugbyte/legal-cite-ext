@@ -53,7 +53,7 @@ module.exports = {
       },
     ],
   },
-  devtool: false,
+  devtool: prod ? false : "source-map",
   target: "web",
   node: false,
   plugins: [
