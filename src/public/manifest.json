@@ -13,11 +13,11 @@
   "content_scripts": [
     {
       "matches": ["https://sso.agc.gov.sg/*"],
-      "js": ["content-scripts/statutes/index.js"]
+      "js": ["browser-polyfill.js", "content-scripts/statutes/index.js"]
     }
   ],
   "background": {
-    "scripts": ["background-scripts/index.js"]
+    "scripts": ["browser-polyfill.js", "background-scripts/index.js"]
   },
   "permissions": [
     "notifications",
