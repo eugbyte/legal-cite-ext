@@ -19,7 +19,7 @@ module.exports = {
     "postcss.config.js",
     "tailwind.config.js",
     "jest.config.js",
-    "build",
+    "dist",
   ],
   env: {
     browser: true,
