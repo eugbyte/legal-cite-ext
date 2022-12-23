@@ -10,7 +10,7 @@
     "lint:fix": "eslint . --ext .js,.ts,.tsx --fix .eslintrc.js",
     "lint:webext": "web-ext --source-dir dist lint",
     "start:firefox": "web-ext --verbose --source-dir dist run --target=firefox-desktop --firefox-preview",
-    "start:chrome": "web-ext --verbose --source-dir dist run --target chromium"
+    "start:chrome": "web-ext --verbose --source-dir dist run --target chromium --firefox-preview"
   },
   "author": "",
   "license": "ISC",
