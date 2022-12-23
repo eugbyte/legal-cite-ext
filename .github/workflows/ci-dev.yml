@@ -30,4 +30,6 @@ jobs:
       - name: Run lint
         run: npm run lint
       - name: Validate web extension
-        run: npm run lint:webext
+        run: |
+          npm run build 
+          npm run lint:webext
