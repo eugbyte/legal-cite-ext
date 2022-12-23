@@ -20,7 +20,6 @@
     "scripts": ["browser-polyfill.js", "background-scripts/index.js"]
   },
   "permissions": [
-    "notifications",
     "contextMenus",
     "clipboardWrite"
   ]
