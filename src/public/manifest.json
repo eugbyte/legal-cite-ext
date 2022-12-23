@@ -22,7 +22,6 @@
   "permissions": [
     "notifications",
     "contextMenus",
-    "clipboardWrite",
-    "storage"
+    "clipboardWrite"
   ]
 }
