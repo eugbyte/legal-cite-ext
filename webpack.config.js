@@ -55,7 +55,14 @@ module.exports = {
   },
   devtool: prod ? false : "source-map",
   target: "web",
-  node: false,
+  node: {
+    // prevent webpack from injecting eval / new Function through global polyfill
+    global: false
+  },
+  // .... other webpack, like output, etc.
+  optimization: {
+    minimize: false
+  },
   plugins: [
     new MiniCssExtractPlugin({
       filename: "[name].css",
