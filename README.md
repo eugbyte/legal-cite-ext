@@ -4,6 +4,14 @@
  Currently supported websites are:
  1. https://sso.agc.gov.sg/Act/**
 
+# Preview
+## Copy
+![Copy from statute website](./preview/statute_screenshot.png)
+
+## Paste
+![Paste in Word Doc](./preview/word_screenshot.png)
+
+
 # To develop and run
 ```
 npm i
@@ -16,7 +24,8 @@ npm run start:firefox
 npm run start:chrome
 ```
 
-# To test
+## To test
 ```
 npm run test
 ```
+
