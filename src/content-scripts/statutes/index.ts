@@ -34,7 +34,7 @@ import { sortCursors } from "./sort-cursors";
 
   browser.runtime.onMessage.addListener(async (action: Action) => {
     try {
-      if (action?.menuID !== APP_ID) {
+      if (action?.ID !== APP_ID) {
         return;
       }
 

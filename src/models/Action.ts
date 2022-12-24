@@ -10,7 +10,7 @@ export enum MENU_CONTEXT_TYPE {
 }
 
 export class Action {
-  constructor(public menuID: string, public message: MENU_CONTEXT_TYPE) {}
+  constructor(public ID: string, public message: string) {}
 }
 
 export const APP_ID = "legal-cite-ext";
