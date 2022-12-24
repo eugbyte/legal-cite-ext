@@ -1,5 +1,5 @@
 import { browser } from "webextension-polyfill-ts";
-import { ACTION } from "~/models/Action";
+import { Action, ACTION } from "~/models/Action";
 import { createParas, write } from "./clipboard";
 import {
   getChapter,
@@ -32,40 +32,53 @@ import { sortCursors } from "./sort-cursors";
     rightCursor = event;
   });
 
-  browser.runtime.onMessage.addListener(async (action: ACTION) => {
-    const isSelect: boolean =
-      leftCursor?.target != null &&
-      rightCursor?.target != null &&
-      action === ACTION.SELECT;
+  browser.runtime.onMessage.addListener(async (action: Action) => {
+    try {
+      // User selects a range of text, and then right clicks
+      const isTextSelect: boolean =
+        leftCursor?.target != null &&
+        rightCursor?.target != null &&
+        action.menuID == "legal-cite-ext" &&
+        action.message === ACTION.SELECT;
+      // User simply right click w/o selecting a range of text
+      const isRightClick: boolean =
+        rightCursor?.target != null &&
+        action.menuID == "legal-cite-ext" &&
+        action.message === ACTION.PAGE;
 
-    if (isSelect) {
-      try {
+      if (!(isTextSelect || isRightClick)) {
+        return;
+      }
+
+      if (isTextSelect) {
         [leftCursor, rightCursor] = sortCursors(
           leftCursor as MouseEvent,
           rightCursor as MouseEvent
         );
-
-        const text: string = document.getSelection()?.toString() || "";
-        const chapter: string = getChapter(); // Personal Data Protection Act 2012
-        const revEdYear = getRevEdYear(); // 2020 Rev Ed
-        const trie: ProvisionTrie = getProvision(
-          leftCursor.target as HTMLElement,
-          rightCursor.target as HTMLElement
-        );
-        console.log({ provision: trie.toString() });
-
-        let textContent = `${text}\n`;
-        textContent += `${chapter} (${revEdYear}) s ${trie.toString()}`;
-
-        let htmlContent = `${createParas(text)}\n`;
-        htmlContent += `${chapter} (${revEdYear}) s ${trie.toString({
-          shouldItalicise: true,
-        })}`;
-
-        await write(htmlContent, textContent);
-      } catch (error) {
-        console.error(error);
+      } else if (isRightClick) {
+        leftCursor = rightCursor;
       }
+
+      const text: string = document.getSelection()?.toString() || "";
+      const chapter: string = getChapter(); // Personal Data Protection Act 2012
+      const revEdYear = getRevEdYear(); // 2020 Rev Ed
+      const trie: ProvisionTrie = getProvision(
+        (leftCursor as MouseEvent).target as HTMLElement,
+        (rightCursor as MouseEvent).target as HTMLElement
+      );
+      console.log({ provision: trie.toString() });
+
+      let textContent = `${text}\n`;
+      textContent += `${chapter} (${revEdYear}) s ${trie.toString()}`;
+
+      let htmlContent = `${createParas(text)}\n`;
+      htmlContent += `${chapter} (${revEdYear}) s ${trie.toString({
+        shouldItalicise: true,
+      })}`;
+
+      await write(htmlContent, textContent);
+    } catch (error) {
+      console.error(error);
     }
   });
 })();

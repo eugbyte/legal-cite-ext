@@ -8,3 +8,7 @@ export enum ACTION {
    */
   PAGE = "PAGE",
 }
+
+export class Action {
+  constructor(public menuID: string, public message: string) {}
+}

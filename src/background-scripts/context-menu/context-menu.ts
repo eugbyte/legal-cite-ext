@@ -18,24 +18,3 @@ export const createContextMenu = (
     contexts,
   });
 };
-
-/**
- * Event listener to handle right click event
- * @param tabId the id of the current active tab
- * @param menuItemId the id of the context menu item clicked
- */
-export const handleRightClick = (
-  tabId: number,
-  menuItemId: number | string
-) => {
-  switch (menuItemId) {
-    case ACTION.SELECT:
-      browser.tabs.sendMessage(tabId, ACTION.SELECT);
-      break;
-    case ACTION.PAGE:
-      browser.tabs.sendMessage(tabId, ACTION.PAGE);
-      break;
-    default:
-      break;
-  }
-};
