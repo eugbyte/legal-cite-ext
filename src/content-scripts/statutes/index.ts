@@ -1,5 +1,5 @@
 import { browser } from "webextension-polyfill-ts";
-import { Action } from "~/models/Action";
+import { ACTION } from "~/models/Action";
 import { createParas, write } from "./clipboard";
 import {
   getChapter,
@@ -32,15 +32,18 @@ import { sortCursors } from "./sort-cursors";
     rightCursor = event;
   });
 
-  browser.runtime.onMessage.addListener(async (action: Action) => {
-    if (
+  browser.runtime.onMessage.addListener(async (action: ACTION) => {
+    const isSelect: boolean =
       leftCursor?.target != null &&
       rightCursor?.target != null &&
-      action.id === "legal-cite-ext" &&
-      action.type === "copy-with-source"
-    ) {
+      action === ACTION.SELECT;
+
+    if (isSelect) {
       try {
-        [leftCursor, rightCursor] = sortCursors(leftCursor, rightCursor);
+        [leftCursor, rightCursor] = sortCursors(
+          leftCursor as MouseEvent,
+          rightCursor as MouseEvent
+        );
 
         const text: string = document.getSelection()?.toString() || "";
         const chapter: string = getChapter(); // Personal Data Protection Act 2012

@@ -1,9 +1,10 @@
-export class Action {
+export enum ACTION {
   /**
-   *
-   * @param id webextension id
-   * @param type action type
-   * @param msg message
+   * User selects a range of text, and then right clicks
    */
-  constructor(public id: string, public type: string, public msg = "") {}
+  SELECT = "SELECT",
+  /**
+   * User simply right click w/o selecting a range of text
+   */
+  PAGE = "PAGE",
 }
