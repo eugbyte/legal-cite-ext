@@ -1,14 +1,16 @@
-export enum ACTION {
+export enum MENU_CONTEXT_TYPE {
   /**
    * User selects a range of text, and then right clicks
    */
-  SELECT = "SELECT",
+  SELECT = "selection",
   /**
    * User simply right click w/o selecting a range of text
    */
-  PAGE = "PAGE",
+  PAGE = "page",
 }
 
 export class Action {
-  constructor(public menuID: string, public message: string) {}
+  constructor(public menuID: string, public message: MENU_CONTEXT_TYPE) {}
 }
+
+export const APP_ID = "legal-cite-ext";

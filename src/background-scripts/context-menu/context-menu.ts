@@ -1,5 +1,5 @@
 import { browser, Menus } from "webextension-polyfill-ts";
-import { ACTION } from "~/models/Action";
+import { MENU_CONTEXT_TYPE } from "~/models/Action";
 
 /**
  * Create the context menu option when user right clicks on the page
@@ -8,7 +8,7 @@ import { ACTION } from "~/models/Action";
  * @param contexts the different contexts a menu item can appear in
  */
 export const createContextMenu = (
-  id: ACTION,
+  id: MENU_CONTEXT_TYPE,
   title: string,
   contexts: Menus.ContextType[]
 ) => {

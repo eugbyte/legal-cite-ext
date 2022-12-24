@@ -1,5 +1,5 @@
 import { browser } from "webextension-polyfill-ts";
-import { Action, ACTION } from "~/models/Action";
+import { Action, APP_ID, MENU_CONTEXT_TYPE } from "~/models/Action";
 import { createParas, write } from "./clipboard";
 import {
   getChapter,
@@ -11,8 +11,8 @@ import { sortCursors } from "./sort-cursors";
 
 /**
  * User flow:
- * 1. User right clicks, triggerring context menu event in the content script
- * 2. Context menu is displayed
+ * 1. User either right clicks, or selects text and then right clicks, triggerring context menu event in the content script
+ * 2. Either selection context menu or page context menu (simple right click) is displayed
  * 2. User left clicks on a context menu item, trigger context menu event in the background script
  */
 
@@ -34,17 +34,20 @@ import { sortCursors } from "./sort-cursors";
 
   browser.runtime.onMessage.addListener(async (action: Action) => {
     try {
+      if (action?.menuID !== APP_ID) {
+        return;
+      }
+
       // User selects a range of text, and then right clicks
       const isTextSelect: boolean =
         leftCursor?.target != null &&
         rightCursor?.target != null &&
-        action.menuID == "legal-cite-ext" &&
-        action.message === ACTION.SELECT;
+        action.message === MENU_CONTEXT_TYPE.SELECT;
+
       // User simply right click w/o selecting a range of text
       const isRightClick: boolean =
         rightCursor?.target != null &&
-        action.menuID == "legal-cite-ext" &&
-        action.message === ACTION.PAGE;
+        action.message === MENU_CONTEXT_TYPE.PAGE;
 
       if (!(isTextSelect || isRightClick)) {
         return;
@@ -56,6 +59,8 @@ import { sortCursors } from "./sort-cursors";
           rightCursor as MouseEvent
         );
       } else if (isRightClick) {
+        // User simply right clicks w/o selecting text, so there will be no left click.
+        // In this case, register the right cursor as the left cursor as `getProvision(leftCursor, rightCursor)` requires both cursors
         leftCursor = rightCursor;
       }
 
@@ -66,7 +71,7 @@ import { sortCursors } from "./sort-cursors";
         (leftCursor as MouseEvent).target as HTMLElement,
         (rightCursor as MouseEvent).target as HTMLElement
       );
-      console.log({ provision: trie.toString() });
+      console.log({ provision: trie.toString() }); // s 2(a)
 
       let textContent = `${text}\n`;
       textContent += `${chapter} (${revEdYear}) s ${trie.toString()}`;
