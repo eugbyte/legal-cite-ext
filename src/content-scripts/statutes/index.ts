@@ -34,21 +34,17 @@ import { sortCursors } from "./sort-cursors";
 
   browser.runtime.onMessage.addListener(async (action: Action) => {
     try {
-      if (action?.ID !== APP_ID) {
-        return;
-      }
-
       // User selects a range of text, and then right clicks
       const isTextSelect: boolean =
+        action?.ID === APP_ID &&
+        action.message === MENU_CONTEXT_TYPE.SELECT &&
         leftCursor?.target != null &&
-        rightCursor?.target != null &&
-        action.message === MENU_CONTEXT_TYPE.SELECT;
-
+        rightCursor?.target != null;
       // User simply right click w/o selecting a range of text
       const isRightClick: boolean =
-        rightCursor?.target != null &&
-        action.message === MENU_CONTEXT_TYPE.PAGE;
-
+        action?.ID === APP_ID &&
+        action.message === MENU_CONTEXT_TYPE.PAGE &&
+        rightCursor?.target != null;
       if (!(isTextSelect || isRightClick)) {
         return;
       }
@@ -60,7 +56,7 @@ import { sortCursors } from "./sort-cursors";
         );
       } else if (isRightClick) {
         // User simply right clicks w/o selecting text, so there will be no left click.
-        // In this case, register the right cursor as the left cursor as `getProvision(leftCursor, rightCursor)` requires both cursors
+        // In this case, register the right cursor as the left cursor since `getProvision(leftCursor, rightCursor)` requires both cursors
         leftCursor = rightCursor;
       }
 
