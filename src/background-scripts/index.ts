@@ -33,8 +33,16 @@ browser.contextMenus.onClicked.addListener(async (info: Menus.OnClickData) => {
 });
 
 // Applies when part of the page is selected, e.g. user selects a range of text and then right clicks.
-createContextMenu(MENU_CONTEXT_TYPE.SELECT, "Copy with citation", [
-  "selection",
-]);
+createContextMenu({
+  id: MENU_CONTEXT_TYPE.SELECT,
+  title: "Copy with citation",
+  contexts: ["selection"],
+  documentUrlPatterns: ["https://sso.agc.gov.sg/Act/*"],
+});
 // Applies when the user simply right clicks on the page
-createContextMenu(MENU_CONTEXT_TYPE.PAGE, "Copy citation", ["page"]);
+createContextMenu({
+  id: MENU_CONTEXT_TYPE.PAGE,
+  title: "Copy citation",
+  contexts: ["page"],
+  documentUrlPatterns: ["https://sso.agc.gov.sg/Act/*"],
+});
