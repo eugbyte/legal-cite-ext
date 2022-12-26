@@ -1,4 +1,3 @@
-import { createContextMenu } from "./context-menu";
 import { getActiveTabID } from "./tabs";
 import { browser, Menus } from "webextension-polyfill-ts";
 import { MENU_CONTEXT_TYPE, Action, APP_ID } from "~/models/Action";
@@ -33,14 +32,15 @@ browser.contextMenus.onClicked.addListener(async (info: Menus.OnClickData) => {
 });
 
 // Applies when part of the page is selected, e.g. user selects a range of text and then right clicks.
-createContextMenu({
+browser.contextMenus.create({
   id: MENU_CONTEXT_TYPE.SELECT,
   title: "Copy with citation",
   contexts: ["selection"],
   documentUrlPatterns: ["https://sso.agc.gov.sg/Act/*"],
 });
+
 // Applies when the user simply right clicks on the page
-createContextMenu({
+browser.contextMenus.create({
   id: MENU_CONTEXT_TYPE.PAGE,
   title: "Copy citation",
   contexts: ["page"],
