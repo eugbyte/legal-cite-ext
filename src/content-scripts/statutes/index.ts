@@ -16,7 +16,7 @@ import { sortCursors } from "./sort-cursors";
  * 2. User left clicks on a context menu item, trigger context menu event in the background script
  */
 
-// IIFE
+// IIFE to prevent variable pollution
 (async () => {
   let leftCursor: MouseEvent | null = null;
   let rightCursor: MouseEvent | null = null;
@@ -32,24 +32,30 @@ import { sortCursors } from "./sort-cursors";
     rightCursor = event;
   });
 
+  /**
+   * 1. Sort the left cursor and right cursor dependening on the user's action - user might select the text backwards, or simply right click w/o left clicking.
+   * 2. Generate the citation based on the left click target element, right click target element.
+   */
   browser.runtime.onMessage.addListener(async (action: Action) => {
     try {
       // User selects a range of text, and then right clicks
       const isTextSelect: boolean =
         action?.ID === APP_ID &&
-        action.message === MENU_CONTEXT_TYPE.SELECT &&
+        action?.message === MENU_CONTEXT_TYPE.SELECT &&
         leftCursor?.target != null &&
         rightCursor?.target != null;
       // User simply right click w/o selecting a range of text
       const isRightClick: boolean =
         action?.ID === APP_ID &&
-        action.message === MENU_CONTEXT_TYPE.PAGE &&
+        action?.message === MENU_CONTEXT_TYPE.PAGE &&
         rightCursor?.target != null;
+
       if (!(isTextSelect || isRightClick)) {
         return;
       }
 
       if (isTextSelect) {
+        // When user selects text, there will be both a left click and right click.
         [leftCursor, rightCursor] = sortCursors(
           leftCursor as MouseEvent,
           rightCursor as MouseEvent
