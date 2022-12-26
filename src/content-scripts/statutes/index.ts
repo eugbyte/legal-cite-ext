@@ -40,17 +40,17 @@ import { sortCursors } from "./sort-cursors";
     try {
       // User selects a range of text, and then right clicks
       const isTextSelect: boolean =
-        action?.ID === APP_ID &&
         action?.message === MENU_CONTEXT_TYPE.SELECT &&
         leftCursor?.target != null &&
         rightCursor?.target != null;
       // User simply right click w/o selecting a range of text
       const isRightClick: boolean =
-        action?.ID === APP_ID &&
         action?.message === MENU_CONTEXT_TYPE.PAGE &&
         rightCursor?.target != null;
 
-      if (!(isTextSelect || isRightClick)) {
+      let isValid = action?.ID === APP_ID;
+      isValid = isValid && (isTextSelect || isRightClick);
+      if (!isValid) {
         return;
       }
 
