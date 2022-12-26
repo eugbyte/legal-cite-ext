@@ -16,5 +16,6 @@ export const createContextMenu = (
     id,
     title,
     contexts,
+    targetUrlPatterns: ["https://sso.agc.gov.sg/*"],
   });
 };
