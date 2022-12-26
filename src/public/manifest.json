@@ -1,8 +1,13 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "SG Legal Citation Extension",
-  "version": "2.0.1",
-  "browser_action": {
+  "version": "2.1.0",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "eugenetham1994@gmail.com"
+    }
+  },
+  "action": {
     "default_popup": "index.html",
     "default_title": "Open the popup",
     "default_icon": "icons/scroll.png"
@@ -17,7 +22,8 @@
     }
   ],
   "background": {
-    "scripts": ["browser-polyfill.js", "background-scripts/index.js"]
+    "service_worker": "background-scripts/index.js",
+    "type": "module"
   },
   "permissions": [
     "contextMenus",
