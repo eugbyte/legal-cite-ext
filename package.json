@@ -10,9 +10,9 @@
     "lint:fix": "eslint . --ext .js,.ts,.tsx --fix .eslintrc.js",
     "lint:webext": "web-ext --source-dir dist lint",
     "start:firefox": "web-ext --verbose --source-dir dist run --target=firefox-desktop --firefox-preview",
-    "start:chrome": "web-ext --verbose --source-dir dist run --target chromium --firefox-preview"
+    "start:chrome": "web-ext --verbose --source-dir dist run --target chromium"
   },
-  "author": "",
+  "author": "eugenetham1994@gmail.com",
   "license": "ISC",
   "devDependencies": {
     "@babel/preset-env": "^7.19.1",
