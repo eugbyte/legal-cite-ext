@@ -9,7 +9,9 @@ function App() {
             <code>https://sso.agc.gov.sg/Act/**</code>
           </li>
           <li>Select the text</li>
-          <li>Right click, select "Copy with Citation" from the context menu</li>
+          <li>
+            Right click, select "Copy with Citation" from the context menu
+          </li>
         </ol>
       </div>
     </div>
